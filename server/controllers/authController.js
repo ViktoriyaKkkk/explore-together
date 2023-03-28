@@ -8,7 +8,7 @@ const generateToken = (id, role)=>{
         id,
         role
     }
-    return jwt.sign(payload, )
+    return jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: '24h'})
 }
 
 class AuthController{
@@ -50,7 +50,8 @@ class AuthController{
                 if (err || !result) {
                     return res.status(400).json({message:'Неверный пароль'})
                 }
-              const token = generat
+                const token = generateToken(user._id, user.role)
+                res.json(token)
             });
         } catch (e){
             res.status(500).json(e)
@@ -65,7 +66,8 @@ class AuthController{
     }
     async getAll(req, res){
         try {
-            res.json('works')
+            const users = await User.find()
+            res.json(users)
         } catch (e){
             res.status(500).json(e)
         }

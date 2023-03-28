@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose'
 import router from "./routes/index.js";
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const DB_URL = 'mongodb+srv://root:gemini2903@cluster0.5cjniay.mongodb.net/?retryWrites=true&w=majority'
 
