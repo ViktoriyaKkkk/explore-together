@@ -3,14 +3,15 @@ import {Card} from "../models/models.js";
 class CardController {
     async create(req, res) {
         try {
-            const {name, owner, level, duration, periodicity, time, format, numberOfPeople, gender, age, participants} = req.body
-            const card = await Card.create({name, owner, level, duration, periodicity, time, format, numberOfPeople, gender, age, participants})
+            const {name, owner, level, duration, periodicity, time,
+                format,city, numberOfPeople, gender, age, participants} = req.body
+            const card = await Card.create({name, owner, level, duration, periodicity, time,
+                format, city, numberOfPeople, gender, age, participants})
             console.log(req.body)
             res.json(card);
         } catch (e) {
             res.status(500).json(e)
         }
-
     }
 
     async update(req, res) {

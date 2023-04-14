@@ -53,7 +53,7 @@ const CardSchema = new Schema( {
     periodicity:{type:Schema.Types.ObjectId, ref:'Periodicity', required:true},
     time:{type:Schema.Types.ObjectId, ref:'Time', required:true},
     format:{type:Schema.Types.ObjectId, ref:'Format', required:true},
-    city_id:{type:Schema.Types.ObjectId, required:true},
+    city:{type:Schema.Types.ObjectId, required:true},
     numberOfPeople:{type:Schema.Types.ObjectId, ref:'NumberOfPeople', required:true},
     gender:{type:String, required:true},
     age:{type:Schema.Types.ObjectId, ref:'Age', required:true},

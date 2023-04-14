@@ -5,12 +5,10 @@ class LevelController {
         try {
             const {name, section_id} = req.body
             const level = await Level.create({name, section_id})
-            console.log(req.body)
             res.json(level);
         } catch (e) {
             res.status(500).json(e)
         }
-
     }
 
     async update(req, res) {
@@ -20,7 +18,6 @@ class LevelController {
                 res.status(400).json({message:'Id не указан'})
             }
             const updatedLevel = await Level.findByIdAndUpdate(level._id, level, {new: true})
-            console.log(req.body)
             res.json(updatedLevel);
         } catch (e) {
             res.status(500).json(e)
