@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const authMiddlaware =  (req, res, next)=>{
+export const authMiddleware =  (req, res, next)=>{
     if (req.method === 'OPTIONS') {
         next()
     }

@@ -8,11 +8,11 @@ const TopicSchema = new Schema( {
 })
 const SectionSchema = new Schema( {
     name: {type: String, required: true},
-    topic_id:{type:Schema.Types.ObjectId, ref:'Topic', required: true}
+    topicId:{type:Schema.Types.ObjectId, ref:'Topic', required: true}
 })
 const LevelSchema = new Schema( {
     name: {type: String, required: true},
-    section_id:{type:Schema.Types.ObjectId, ref:'Section', required: true}
+    sectionId:{type:Schema.Types.ObjectId, ref:'Section', required: true}
 })
 const DurationSchema = new Schema( {
     name: {type: String, required: true}
@@ -26,9 +26,6 @@ const TimeSchema = new Schema( {
 const FormatSchema = new Schema( {
     name: {type: String, required: true}
 })
-const NumberOfPeopleSchema = new Schema( {
-    name: {type: String, required: true}
-})
 const AgeSchema = new Schema( {
     name: {type: String, required: true}
 })
@@ -40,12 +37,12 @@ const UserSchema = new Schema( {
     password:{type: String, required:true},
     role:{type:Schema.Types.ObjectId, ref:'Role', required: true},
     name: {type: String, required: true},
-    gender:{type:String, required:true},
-    birthDate:{type: Date, required:true},
+    gender:{type:String, required: true},
+    birthDate:{type: Date},
     socialNetwork:{type:String},
     info:{type:String}
 })
-const CardSchema = new Schema( {
+const SearchSchema = new Schema( {
     name: {type: String, required: true},
     owner:{type: Schema.Types.ObjectId, ref:'User', required:true},
     level:{type:Schema.Types.ObjectId, ref:'Level', required:true},
@@ -53,12 +50,13 @@ const CardSchema = new Schema( {
     periodicity:{type:Schema.Types.ObjectId, ref:'Periodicity', required:true},
     time:{type:Schema.Types.ObjectId, ref:'Time', required:true},
     format:{type:Schema.Types.ObjectId, ref:'Format', required:true},
-    city:{type:Schema.Types.ObjectId, required:true},
-    numberOfPeople:{type:Schema.Types.ObjectId, ref:'NumberOfPeople', required:true},
-    gender:{type:String, required:true},
+    city:{type:Schema.Types.ObjectId},
+    numberOfPeople:{type: Number},
+    participantsGender:{type:String},
+    searchGender:{type:String},
     age:{type:Schema.Types.ObjectId, ref:'Age', required:true},
-    participants:[{type:Schema.Types.ObjectId, ref:'User', required:true}]
-
+    participants:[{type:Schema.Types.ObjectId, ref:'User'}],
+    marker:{type:Boolean, default:true}
 })
 
 const City = model('City', CitySchema)
@@ -69,11 +67,10 @@ const Duration = model('Duration', DurationSchema)
 const Periodicity = model('Periodicity', PeriodicitySchema)
 const Time = model('Time', TimeSchema)
 const Format = model('Format', FormatSchema)
-const NumberOfPeople = model('Number_op_people', NumberOfPeopleSchema)
 const Age = model('Age', AgeSchema)
 const Role = model('Role', RoleSchema)
 const User = model('User', UserSchema)
-const Card = model('Card', CardSchema)
+const Search = model('Search', SearchSchema)
 
 export {
     City,
@@ -84,9 +81,8 @@ export {
     Periodicity,
     Time,
     Format,
-    NumberOfPeople,
     Age,
     Role,
     User,
-    Card
+    Search
 }

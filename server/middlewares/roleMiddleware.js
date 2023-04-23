@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const roleMiddlaware =  (role)=> (req, res, next)=>{
+export const roleMiddleware =  (role)=> (req, res, next)=>{
     if (req.method === 'OPTIONS') {
         next()
     }

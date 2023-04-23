@@ -1,10 +1,12 @@
 import {Section} from "../models/models.js";
+import mongoose from "mongoose";
 
 class SectionController {
     async create(req, res) {
         try {
-            const {name, topic_id} = req.body
-            const section = await Section.create({name, topic_id})
+            let {name, topicId} = req.body
+            topicId = new mongoose.Types.ObjectId(topicId);
+            const section = await Section.create({name, topicId})
             console.log(req.body)
             res.json(section);
         } catch (e) {

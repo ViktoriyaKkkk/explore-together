@@ -1,10 +1,12 @@
 import {Level} from "../models/models.js";
+import mongoose from "mongoose";
 
 class LevelController {
     async create(req, res) {
         try {
-            const {name, section_id} = req.body
-            const level = await Level.create({name, section_id})
+            let {name, sectionId} = req.body
+            sectionId = new mongoose.Types.ObjectId(sectionId);
+            const level = await Level.create({name, sectionId})
             res.json(level);
         } catch (e) {
             res.status(500).json(e)
