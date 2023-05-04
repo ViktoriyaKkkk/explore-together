@@ -52,7 +52,7 @@ class SearchController {
                 }
 
             } else if(createdSearch){
-                res.json(`У вас уже создан активный поисковый запрос с такими параметрами - ${createdSearch.name}`)
+                res.json(`У вас уже есть активный поисковый запрос с такими параметрами - ${createdSearch.name}`)
             } else {
 
                 const search = await Search.create({name, owner:id, level, duration, periodicity, time,

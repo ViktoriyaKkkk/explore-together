@@ -16,10 +16,11 @@ class AuthController{
         try {
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
+                console.log(errors)
                 return res.status(400).json({message:"Ошибка регистрации", errors})
             }
             let role = "USER"
-            const {email, password, name, gender, birthDate, socialNetwork, info} = req.body
+            const {name, email, password, gender, birthDate, socialNetwork, info} = req.body
             const candidate = await User.findOne({email})
             if(candidate) {
                 return res.status(400).json({message:"Пользователь с таким адресом email уже существует"})
@@ -32,8 +33,9 @@ class AuthController{
                     role = 'ADMIN'
                 }
                 const [roleData] = await Role.find({name:role}).exec();
-                await User.create({email, password: hash, role: roleData._id, name, gender, birthDate, socialNetwork, info})
-                return res.json("Успешно")
+                const user = await User.create({email, password: hash, role: roleData._id, name, gender, birthDate, socialNetwork, info})
+                const token = generateToken(user._id, user.role)
+                return res.json(token)
                 })
         } catch (e){
             return res.status(500).json(e)
@@ -68,6 +70,15 @@ class AuthController{
         try {
             const users = await User.find()
             res.json(users)
+        } catch (e){
+            res.status(500).json(e)
+        }
+    }
+
+    async check(req, res){
+        try {
+            const token = generateToken(req.user._id, req.user.role)
+            res.json(token)
         } catch (e){
             res.status(500).json(e)
         }

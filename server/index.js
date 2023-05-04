@@ -2,11 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose'
 import router from "./routes/index.js";
 import * as dotenv from 'dotenv'
+import cors from 'cors'
 dotenv.config()
 
 const DB_URL = 'mongodb+srv://root:gemini2903@cluster0.5cjniay.mongodb.net/?retryWrites=true&w=majority'
 
 const app = express();
+app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 
