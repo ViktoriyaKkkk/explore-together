@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
 import {routes} from "../routes";
 import {Routes, Route, Navigate} from "react-router-dom";
+import { useAppContext } from '../context/AppContext'
+import { check } from '../api/api.user'
 
 const AppRouter = () => {
+
+	const {userStore} = useAppContext()
+	const [loading, setLoading] = useState(true)
+
+	useEffect(()=>{
+
+		check().then(res =>{
+			if (res.response && res.response.status === 403){
+				userStore.setIsAuth(false)
+				userStore.setUser({})
+			} else {
+				userStore.setIsAuth(true)
+				userStore.setUser(res)
+			}
+		},
+			err =>{
+				userStore.setIsAuth(false)
+				console.log('checkError',userStore._isAuth)
+			}
+			).finally(()=>setLoading(false))
+	})
+
+	if (loading){
+		console.log('loading')
+		return <></>
+	}
+
 	return (
 		<Routes>
 			{

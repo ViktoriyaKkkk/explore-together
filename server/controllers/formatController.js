@@ -16,10 +16,10 @@ class FormatController {
     async update(req, res) {
         try {
             const format = req.body
-            if (!format._id) {
+            if (!format.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedFormat = await Format.findByIdAndUpdate(format._id, format, {new: true})
+            const updatedFormat = await Format.findByIdAndUpdate(format.id, format, {new: true})
             console.log(req.body)
             res.json(updatedFormat);
         } catch (e) {

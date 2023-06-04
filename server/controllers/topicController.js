@@ -16,10 +16,10 @@ class TopicController {
     async update(req, res) {
         try {
             const topic = req.body
-            if (!topic._id) {
+            if (!topic.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedTopic = await Topic.findByIdAndUpdate(topic._id, topic, {new: true})
+            const updatedTopic = await Topic.findByIdAndUpdate(topic.id, topic, {new: true})
             console.log(req.body)
             res.json(updatedTopic);
         } catch (e) {

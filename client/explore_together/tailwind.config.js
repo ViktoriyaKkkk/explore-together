@@ -15,6 +15,18 @@ const colors = {
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      'white': '#ffffff',
+      black: '#333333',
+      red: '#EB5757',
+      gray: '#828282',
+      'light-gray': '#B0B0B0',
+      'dark-white': '#F2F2F2',
+      'dark-green': '#40936B',
+      'light-green': '#6FCF97',
+    },
     extend: {},
   },
   plugins: [],

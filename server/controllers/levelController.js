@@ -16,10 +16,10 @@ class LevelController {
     async update(req, res) {
         try {
             const level = req.body
-            if (!level._id) {
+            if (!level.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedLevel = await Level.findByIdAndUpdate(level._id, level, {new: true})
+            const updatedLevel = await Level.findByIdAndUpdate(level.id, level, {new: true})
             res.json(updatedLevel);
         } catch (e) {
             res.status(500).json(e)

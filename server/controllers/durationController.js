@@ -16,10 +16,10 @@ class DurationController {
     async update(req, res) {
         try {
             const duration = req.body
-            if (!duration._id) {
+            if (!duration.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedDuration = await Duration.findByIdAndUpdate(duration._id, duration, {new: true})
+            const updatedDuration = await Duration.findByIdAndUpdate(duration.id, duration, {new: true})
             console.log(req.body)
             res.json(updatedDuration);
         } catch (e) {

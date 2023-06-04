@@ -1,5 +1,7 @@
 import AppRouter from './components/AppRouter'
-import { AppWrapper } from './context/AppContext'
+import { AppWrapper, useAppContext } from './context/AppContext'
+import { useEffect } from 'react'
+import { check } from './api/api.user'
 
 function App() {
   return (

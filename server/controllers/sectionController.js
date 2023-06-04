@@ -18,10 +18,10 @@ class SectionController {
     async update(req, res) {
         try {
             const section = req.body
-            if (!section._id) {
+            if (!section.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedSection = await Section.findByIdAndUpdate(section._id, section, {new: true})
+            const updatedSection = await Section.findByIdAndUpdate(section.id, section, {new: true})
             console.log(req.body)
             res.json(updatedSection);
         } catch (e) {

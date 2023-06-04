@@ -16,10 +16,10 @@ class AgeController {
     async update(req, res) {
         try {
             const age = req.body
-            if (!age._id) {
+            if (!age.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedAge = await Age.findByIdAndUpdate(age._id, age, {new: true})
+            const updatedAge = await Age.findByIdAndUpdate(age.id, age, {new: true})
             console.log(req.body)
             res.json(updatedAge);
         } catch (e) {

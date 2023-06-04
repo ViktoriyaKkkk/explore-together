@@ -16,10 +16,10 @@ class TimeController {
     async update(req, res) {
         try {
             const time = req.body
-            if (!time._id) {
+            if (!time.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedTime = await Time.findByIdAndUpdate(time._id, time, {new: true})
+            const updatedTime = await Time.findByIdAndUpdate(time.id, time, {new: true})
             console.log(req.body)
             res.json(updatedTime);
         } catch (e) {

@@ -38,7 +38,6 @@ const UserSchema = new Schema( {
     role:{type:Schema.Types.ObjectId, ref:'Role', required: true},
     name: {type: String, required: true},
     gender:{type:String, required: true},
-    birthDate:{type: Date},
     socialNetwork:{type:String},
     info:{type:String}
 })
@@ -59,6 +58,13 @@ const SearchSchema = new Schema( {
     marker:{type:Boolean, default:true}
 })
 
+const ReportSchema = new Schema({
+    sender: {type: Schema.Types.ObjectId, ref:'User', required:true},
+    offender: {type: Schema.Types.ObjectId, ref:'User', required:true},
+    reportText: {type: String, required:true},
+    processed: {type: Boolean, required:true, default:false}
+})
+
 const City = model('City', CitySchema)
 const Topic = model('Topic', TopicSchema)
 const Section = model('Section', SectionSchema)
@@ -71,6 +77,7 @@ const Age = model('Age', AgeSchema)
 const Role = model('Role', RoleSchema)
 const User = model('User', UserSchema)
 const Search = model('Search', SearchSchema)
+const Report = model('Report', ReportSchema)
 
 export {
     City,
@@ -84,5 +91,6 @@ export {
     Age,
     Role,
     User,
-    Search
+    Search,
+    Report
 }

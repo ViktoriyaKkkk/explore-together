@@ -10,12 +10,15 @@ authRouter.post('/registration', [
   check("name", "Поле Имя не может быть пустым").notEmpty(),
     check("email", "Поле email не может быть пустым").notEmpty(),
         check('password', "Пароль должен содержать от 6 до 20 символов").isLength({min:6, max:20}),
-        check("gender", "Вы не указали ваш пол").notEmpty()
+        check("gender", "Вы не указали ваш пол").notEmpty(),
+    check("socialNetwork", "Поле socialNetwork не может быть пустым").notEmpty()
     ],
     AuthController.registration)
 authRouter.post('/login', AuthController.login)
-authRouter.put('/upduser', roleMiddleware('641e18b855a5d5389d78aba8'), AuthController.update)
-authRouter.get('/users', roleMiddleware('641e18b855a5d5389d78aba8'), AuthController.getAll)
+authRouter.put('/', authMiddleware, AuthController.update)
+authRouter.get('/', authMiddleware, AuthController.getAll)
 authRouter.get('/check', authMiddleware, AuthController.check)
+authRouter.get('/:id', authMiddleware, AuthController.getOne)
+authRouter.delete('/:id', roleMiddleware('641e18b855a5d5389d78aba8'), AuthController.delete)
 
 export default authRouter;

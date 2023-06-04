@@ -16,10 +16,10 @@ class PeriodicityController {
     async update(req, res) {
         try {
             const periodicity = req.body
-            if (!periodicity._id) {
+            if (!periodicity.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedPeriodicity = await Periodicity.findByIdAndUpdate(periodicity._id, periodicity, {new: true})
+            const updatedPeriodicity = await Periodicity.findByIdAndUpdate(periodicity.id, periodicity, {new: true})
             console.log(req.body)
             res.json(updatedPeriodicity);
         } catch (e) {

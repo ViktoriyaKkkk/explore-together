@@ -16,10 +16,10 @@ class CityController {
     async update(req, res) {
         try {
             const city = req.body
-            if (!city._id) {
+            if (!city.id) {
                 res.status(400).json({message:'Id не указан'})
             }
-            const updatedCity = await City.findByIdAndUpdate(city._id, city, {new: true})
+            const updatedCity = await City.findByIdAndUpdate(city.id, city, {new: true})
             console.log(req.body)
             res.json(updatedCity);
         } catch (e) {
