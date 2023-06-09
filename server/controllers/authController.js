@@ -47,12 +47,6 @@ class AuthController {
 		try {
 			const { email, password } = req.body
 			const user = await User.findOne({ email }).exec()
-			const message = {
-				to: email,
-				subject: 'You are logged in!',
-				text: "Поздравляем ляляля"
-			}
-			mailer(message)
 			if (!user) {
 				return res.status(400).json({ message: `Пользователь ${email} не найден` })
 			}

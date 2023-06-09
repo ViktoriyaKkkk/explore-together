@@ -23,8 +23,13 @@ import { IconContext } from 'react-icons'
 import { IoClose } from 'react-icons/io5'
 import { createReports } from '../api/api.report'
 import Profile from '../components/Profile'
+import { useValidation } from '../utils/useValidation'
+import io from 'socket.io-client'
+
+
 
 const MySearch = observer(() => {
+	// const socket = io.connect('http://localhost:5000')
 
 	const navigate = useNavigate()
 	const { userStore, AdminInstance } = useAppContext()
@@ -119,14 +124,26 @@ const MySearch = observer(() => {
 	}, [users])
 
 	const [reportText, setReportText] = useState('')
+	const [reportErr, validateReport] = useValidation(reportText, {isEmpty: true})
+	const [bluredReport, setBluredReport] = useState(false)
+
 	// console.log(searches)
 	if (Object.keys(levelsById).length === 0 || Object.keys(sectionsById).length === 0 || Object.keys(topicsById).length === 0 ||
 		Object.keys(usersById).length === 0 || searches === []) {
 		// console.log('done')
-		return <Layout></Layout>
+		return <Layout>
+			<div className='absolute w-full -z-20 h-full bg-black'>
+			</div>
+			<div
+				className="absolute w-full -z-10 h-full [mask-image:linear-gradient(0deg,black,transparent)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
+			</div>
+		</Layout>
 	}
 	return (
 		<Layout>
+
+			{/*Вывод информации о пользователе*/}
+
 			{
 				userStore.isProfile && <Profile />
 			}
@@ -150,17 +167,16 @@ const MySearch = observer(() => {
 						</button>
 					</div>
 					<div className='px-6 py-4 space-y-2 text-white'>
-						<p htmlFor='name'
-							 className='text-xl font-semibold'>Имя: {userStore.isReading.name}</p>
-						<p htmlFor='name'
-							 className='text-xl font-semibold'>Пол: {userStore.isReading.gender}</p>
-						<p htmlFor='name' className='text-xl font-semibold'>Социальная
+						<p className='text-xl font-semibold'>Имя: {userStore.isReading.name}</p>
+						<p className='text-xl font-semibold'>Пол: {userStore.isReading.gender}</p>
+						<p className='text-xl font-semibold'>Социальная
 							сеть: {userStore.isReading.socialNetwork}</p>
-						<p htmlFor='name'
-							 className='text-xl font-semibold'>Информация: {userStore.isReading.info ? userStore.isReading.info : '-'}</p>
+						<p className='text-xl font-semibold'>Информация: {userStore.isReading.info ? userStore.isReading.info : '-'}</p>
 					</div>
 
 				</ReadModal>}
+
+			{/*Окно жалобы*/}
 
 			<ModalLayout admin={false} func={() => {
 				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => console.log(r))
@@ -179,15 +195,22 @@ const MySearch = observer(() => {
 					</button>
 				</div>
 
-				<div className='p-7 space-y-6'>
+				<div className='p-8 space-y-3'>
 					<label htmlFor='report' className='inline text-xl font-semibold text-white'>Опишите вашу
 						жалобу: </label>
 					<textarea cols='40' rows='3' id='report' name='report' placeholder='Введите текст жалобы'
 										autoComplete='report'
 										value={reportText} onChange={e => setReportText(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray bg-black font-semibold
+										onBlur={e => {
+											setBluredReport(true)
+											validateReport()
+										}}
+										className='block w-full px-4 py-2 text-gray bg-black font-semibold
 								border border-gray rounded-md focus:border-dark-green focus:outline-none focus:ring-2 focus:ring-light-green'
 										required />
+					{
+						reportErr && bluredReport && <p className='fixed bottom-24 text-red'>{reportErr}</p>
+					}
 				</div>
 			</ModalLayout>
 
@@ -201,6 +224,9 @@ const MySearch = observer(() => {
 			<div
 				className="fixed bottom-0 w-full -z-30 h-full [mask-image:linear-gradient(0deg,transparent,black)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
 			</div>
+
+			{/*Запросы созданные пользователем*/}
+
 			<div
 				className='min-h-screen pt-14 flex flex-col'>
 				<h2 className='mt-10 mb-2 text-3xl text-white text-center font-bold'>Ваши поисковые запросы</h2>
@@ -253,7 +279,7 @@ const MySearch = observer(() => {
 										</p>
 									</div>
 								</div>
-								<div className={'flex flex-wrap place-content-around'}>
+								<div className={'flex flex-col place-content-around'}>
 									<button onClick={() => {
 										updateSearches(item._id, !item.marker).then(r => {
 											load()
@@ -266,11 +292,23 @@ const MySearch = observer(() => {
 										item.marker ? 'Завершить поиск' : 'Возобновить поиск'
 									}
 									</button>
+									<button onClick={()=>{
+									// socket.emit('join_room', item._id)
+										navigate(`/dialogs/${item._id}`)
+									}
+									}
+													className='mb-5 px-6 disabled:cursor-not-allowed text-xl py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
+							hover:bg-light-green focus:outline-none'
+													data-modal-target='staticModal' data-modal-toggle='staticModal'>
+										К диалогу
+									</button>
 								</div>
 							</div>
 						})
 					}
 				</div>
+
+				{/*Запросы, где пользователь участник*/}
 
 				<h2 className='mt-10 mb-2 text-3xl text-white text-center font-bold'>Поисковые запросы где вы - участник</h2>
 				<div
@@ -282,8 +320,8 @@ const MySearch = observer(() => {
 								<div className='flex flex-col mx-auto'>
 									<h3 className='mb-2 text-2xl text-center font-bold tracking-tight'>{item.name}</h3>
 									<div className='text-xl'>
-										<p onClick={() => userStore.setIsReading(item.owner)}
-											 className='mb-3 font-normal'>Владелец: {item.owner}</p>
+										<Link onClick={() => userStore.setIsReading(usersById[item.owner])}
+											 className='mb-3 font-normal'>Владелец: {usersById[item.owner]['name']}</Link>
 										<p
 											className='mb-3 font-normal'>Тема: {topicsById[sectionsById[levelsById[item.level]?.sectionId]?.topicId]?.name}</p>
 										<p
@@ -322,7 +360,7 @@ const MySearch = observer(() => {
 										</p>
 									</div>
 								</div>
-								<div className={'flex flex-wrap place-content-around'}>
+								<div className={'flex flex-col place-content-around'}>
 									<button onClick={() => {
 										updateSearches(item._id, !item.marker).then(r => {
 											load()
@@ -334,6 +372,16 @@ const MySearch = observer(() => {
 													data-modal-target='staticModal' data-modal-toggle='staticModal'>{
 										item.marker ? 'Завершить поиск' : 'Возобновить поиск'
 									}
+									</button>
+									<button onClick={()=>{
+										// socket.emit('join_room', item._id)
+										navigate(`/dialogs/${item._id}`)
+									}
+									}
+													className='mb-5 px-6 disabled:cursor-not-allowed text-xl py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
+							hover:bg-light-green focus:outline-none'
+													data-modal-target='staticModal' data-modal-toggle='staticModal'>
+										К диалогу
 									</button>
 								</div>
 							</div>

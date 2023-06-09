@@ -115,7 +115,8 @@ const Profile = observer(() => {
 						</div>
 
 						<div className='space-y-1'>
-							<label htmlFor='email' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Пароль: </label>
+							<label htmlFor='email' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400
+							after:content-["*"] after:ml-0.5 after:text-light-green after:text-xl'>Пароль:</label>
 							<input id='password' type='password' name='password' placeholder='Пароль' autoComplete='current-password'
 										 value={password} onChange={e => setPassword(e.target.value)}
 										 onBlur={e=> {
@@ -147,7 +148,7 @@ const Profile = observer(() => {
 						</div>
 
 						<div className='space-y-1'>
-							<label className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Gender: </label>
+							<label className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Пол: </label>
 							<select value={gender} onChange={e => setGender(e.target.value)}
 											className='block w-full px-4 py-2 mt-2 text-white bg-black border
 											 border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2

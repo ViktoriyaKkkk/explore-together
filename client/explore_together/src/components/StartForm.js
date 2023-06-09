@@ -78,7 +78,7 @@ const StartForm = observer(() => {
 							<div className='grid grid-cols-1 gap-5'>
 								{
 									!userStore._isLogin && <div>
-										<label htmlFor='name' className='block text-xl text-white'>Имя</label>
+										<label htmlFor='name' className='block text-xl text-white '>Имя:</label>
 										<input id='name' type='name' name='name' placeholder='Введите имя' autoComplete='name'
 													 value={name} onChange={e => setName(e.target.value)}
 													 onBlur={e => {
@@ -96,7 +96,7 @@ const StartForm = observer(() => {
 								}
 
 								<div>
-									<label htmlFor='email' className='block text-xl text-white'>Эл. почта</label>
+									<label htmlFor='email' className='block text-xl text-white'>Эл. почта:</label>
 									<input id='email' type='email' name='email' placeholder='Введите эл. почту' autoComplete='email'
 												 value={email} onChange={e => setEmail(e.target.value)}
 												 onBlur={e => {
@@ -114,7 +114,7 @@ const StartForm = observer(() => {
 
 								<div>
 									<label htmlFor='password'
-												 className='block text-xl text-white'>Пароль</label>
+												 className='block text-xl text-white'>Пароль:</label>
 									<input id='password' type='password' name='password' placeholder='Введите пароль'
 												 autoComplete='current-password'
 												 value={password} onChange={e => setPassword(e.target.value)}
@@ -133,14 +133,14 @@ const StartForm = observer(() => {
 									!userStore._isLogin && <>
 										<div>
 											<label htmlFor='password'
-														 className='block text-xl text-white'>Пол</label>
+														 className='block text-xl text-white'>Пол:</label>
 
 											<select value={gender} onChange={e => setGender(e.target.value)}
 															className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border
 												border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 focus:ring-light-green
 												focus:outline-none'>
-												<option value={'Жен'}>Жен</option>
-												<option value={'Муж'}>Муж</option>
+												<option value={'Жен'}>Женский</option>
+												<option value={'Муж'}>Мужской</option>
 											</select>
 										</div>
 										{/*<div className='flex items-center mb-4'>*/}

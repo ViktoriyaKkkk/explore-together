@@ -54,7 +54,7 @@ const Age = observer(() => {
 					AdminInstance.setIsModal(false)
 					AdminInstance.setIsCreating(true)
 				}}
-								className='my-5 ml-52 px-6 disabled:cursor-not-allowed text-xl py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
+								className='my-5 ml-52 p-4 disabled:cursor-not-allowed text-xl leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
 							hover:bg-light-green focus:outline-none'
 								data-modal-target='staticModal' data-modal-toggle='staticModal'>Добавить запись
 				</button>

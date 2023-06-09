@@ -18,8 +18,8 @@ const DeleteModal = observer(({document, load, deleteFunc }) => {
 			})
 			AdminInstance.setIsDeleting('')
 		}}>
-			<div className='flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600'>
-				<h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+			<div className='flex items-start justify-between p-4 border-b rounded-t border-gray'>
+				<h3 className='text-xl font-semibold text-white'>
 					Удаление записи из документа {document} с id={AdminInstance._isDeleting}
 				</h3>
 				<button type='button' onClick={() => {
@@ -34,7 +34,7 @@ const DeleteModal = observer(({document, load, deleteFunc }) => {
 			</div>
 
 			<div className='p-6 space-y-6'>
-				<p className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Вы действительно хотите удалить запись с id {AdminInstance._isDeleting}?</p>
+				<p className='inline text-xl font-semibold text-white'>Вы действительно хотите удалить запись с id {AdminInstance._isDeleting}?</p>
 			</div>
 		</ModalLayout>
 	)

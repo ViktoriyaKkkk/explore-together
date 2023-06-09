@@ -44,37 +44,37 @@ const Search = observer(() => {
 				AdminInstance._isDeleting!=='' && <DeleteModal document={'Searches'} load={load} deleteFunc={deleteSearches}/>
 			}
 			<Sidebar />
-			<div className={'flex flex-wrap ml-52 my-5 place-content-center'}>
+			<div className='flex flex-wrap ml-52 mt-24 place-content-center'>
 			{
 				searches?.map((item)=>{
 					return 			<div key={item._id}
-						className="flex flex-col place-content-between basis-1/4 mr-5 mb-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+						className="flex flex-col text-white place-content-between basis-1/4 mr-5 mb-5 p-6 border border-gray rounded-lg shadow bg-black">
 						<div>
-							<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{item._id}</h5>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Name: {item.name}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Owner: {item.owner}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Level: {item.level}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Duration: {item.duration}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Periodicity: {item.periodicity}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Time: {item.time}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Format: {item.format}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">City: {item.city ? item.city : '-'}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">NumberOfPeople: {item.numberOfPeople ? item.numberOfPeople : '-'}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">ParticipantsGender: {item.participantsGender}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">SearchGender: {item.searchGender}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Age: {item.age}</p>
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Participants:</p> {item.participants.map((participant)=>{
-							return <p key={participant} className="mb-3 ml-5 font-normal text-gray-700 dark:text-gray-400">{participant}</p>
+							<h5 className="mb-2 text-2xl font-bold tracking-tight">{item._id}</h5>
+							<p className="mb-3 text-xl font-normal">Name: {item.name}</p>
+							<p className="mb-3 font-normal">Owner: {item.owner}</p>
+							<p className="mb-3 font-normal">Level: {item.level}</p>
+							<p className="mb-3 font-normal">Duration: {item.duration}</p>
+							<p className="mb-3 font-normal">Periodicity: {item.periodicity}</p>
+							<p className="mb-3 font-normal">Time: {item.time}</p>
+							<p className="mb-3 font-normal">Format: {item.format}</p>
+							<p className="mb-3 font-normal">City: {item.city ? item.city : '-'}</p>
+							<p className="mb-3 font-normal">NumberOfPeople: {item.numberOfPeople ? item.numberOfPeople : '-'}</p>
+							<p className="mb-3 font-normal">ParticipantsGender: {item.participantsGender}</p>
+							<p className="mb-3 font-normal">SearchGender: {item.searchGender}</p>
+							<p className="mb-3 font-normal">Age: {item.age}</p>
+							<p className="mb-3 font-normal">Participants:</p> {item.participants.map((participant)=>{
+							return <p key={participant} className="mb-3 ml-5 font-normal">{participant}</p>
 						})}
-							<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Marker: {`${item.marker}`}</p>
+							<p className="mb-3 font-normal">Marker: {`${item.marker}`}</p>
 						</div>
 						<div className={'flex flex-wrap place-content-between'}>
 						<button onClick={()=>{
 							AdminInstance.setIsModal(false)
 							AdminInstance.setIsEditing(item._id)
 						}}
-										className='my-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300
-										font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+										className='my-5 text-white text-xl rounded-lg text-sm px-5 py-2.5 text-center transition-colors
+							duration-200 transform bg-dark-green rounded-md hover:bg-light-green focus:outline-none'
 										data-modal-target="staticModal" data-modal-toggle="staticModal" >Редактировать
 						</button>
 
@@ -82,8 +82,8 @@ const Search = observer(() => {
 							AdminInstance.setIsModal(false)
 							AdminInstance.setIsDeleting(item._id)
 						}}
-										className='my-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300
-										font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+										className='my-5 text-white rounded-lg text-sm px-5 py-2.5 text-center transition-colors
+							duration-200 transform bg-dark-green rounded-md hover:bg-light-green focus:outline-none'
 										data-modal-target="staticModal" data-modal-toggle="staticModal" >Удалить
 						</button></div>
 					</div>

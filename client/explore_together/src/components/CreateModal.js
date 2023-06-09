@@ -36,7 +36,7 @@ const CreateModal = observer(({document, load, createFunc }) => {
 			</div>
 
 			<div className='p-6 space-y-6'>
-				<label htmlFor='name' className='inline text-xl font-semibold text-white'>Name: </label>
+				<label htmlFor='name' className='inline text-xl font-semibold text-white'>name: </label>
 				<input id='name' type='name' name='name' placeholder='name' autoComplete='name'
 							 value={name} onChange={e => setName(e.target.value)}
 							 className='placeholder-light-gray block w-full px-4 py-2 mt-2 text-white bg-black border

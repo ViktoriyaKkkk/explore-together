@@ -73,7 +73,7 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 			AdminInstance.setIsEditing('')
 		}}>
 			<div className='flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600'>
-				<h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+				<h3 className='text-xl font-semibold text-white'>
 					Редактирование записи из документа {document} с id={AdminInstance._isEditing}
 				</h3>
 				<button type='button' onClick={() => {
@@ -91,11 +91,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 			<form>
 				<div className='grid mx-5 mb-5 grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='username'>Name: </label>
-						<input value={selectedName} onChange={e=>setSelectedName(e.target.value)} placeholder={'Название запроса на поиск'}
-									 id='name' type='text' className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white
-								border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500
-								dark:focus:border-blue-500 focus:outline-none focus:ring' />
+						<label className='text-white' htmlFor='username'>Name: </label>
+						<input value={selectedName} onChange={e=>setSelectedName(e.target.value)} placeholder={'Название за8проса на поиск'}
+									 id='name' type='text' className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green' />
 					</div>
 
 					{/*<div>*/}
@@ -128,11 +127,11 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					{/*</div>*/}
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Level: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Level: </label>
 						<select value={selectedLevel}
 										onChange={(e) => setSelectedLevel(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите уровень</option>
 							{
 								bundlOfLevels?.map((level) => {
@@ -143,10 +142,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Duration: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Duration: </label>
 						<select value={selectedDuration} onChange={(e) => setSelectedDuration(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите длительность</option>
 							{
 								durations?.map((duration) => {
@@ -157,10 +156,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Periodicity: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Periodicity: </label>
 						<select value={selectedPeriodicity} onChange={(e) => setSelectedPeriodicity(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите частоту</option>
 							{
 								periodicities?.map((item) => {
@@ -171,10 +170,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Time: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Time: </label>
 						<select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите количество времени</option>
 							{
 								times?.map((item) => {
@@ -185,10 +184,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Format: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Format: </label>
 						<select value={selectedFormat} onChange={(e) => setSelectedFormat(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите формат</option>
 							{
 								formats?.map((item) => {
@@ -199,10 +198,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>City: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>City: </label>
 						<select disabled={selectedFormat!=='641e114f2945eabd89d70189'} value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите город</option>
 							{
 								cities?.map((item) => {
@@ -213,10 +212,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>NumberOfPeople: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>NumberOfPeople: </label>
 						<select value={selectedNumberOfPeople} onChange={(e) => setSelectedNumberOFPeople(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={''}>Выберите число людей</option>
 							<option value={1}>1</option>
 							<option value={2}>2</option>
@@ -229,10 +228,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>ParticipantsGender: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>ParticipantsGender: </label>
 						<select value={selectedParticipantsGender} onChange={(e) => setSelectedParticipantsGender(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={''}>Выберите пол участников</option>
 							<option value={'Жен'}>Женский</option>
 							<option value={'Муж'}>Мужской</option>
@@ -241,10 +240,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>SearchGender: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>SearchGender: </label>
 						<select value={selectedSearchGender} onChange={(e) => setSelectedSearchGender(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={''}>Выберите пол участников</option>
 							<option value={'Жен'}>Женский</option>
 							<option value={'Муж'}>Мужской</option>
@@ -253,10 +252,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Age: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Age: </label>
 						<select value={selectedAge} onChange={(e) => setSelectedAge(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={0}>Выберите возрастной диапазон</option>
 							{
 								ages?.map((item) => {
@@ -267,10 +266,10 @@ const UpdateSearch = observer(({document, records, load, updateFunc}) => {
 					</div>
 
 					<div>
-						<label className='text-white dark:text-gray-200' htmlFor='passwordConfirmation'>Marker: </label>
+						<label className='text-white' htmlFor='passwordConfirmation'>Marker: </label>
 						<select value={selectedMarker} onChange={(e) => setSelectedMarker(e.target.value)}
-										className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800
-								dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'>
+										className='block w-full px-4 py-2 mt-2 rounded-md focus:outline-none placeholder-light-gray
+									 text-white bg-black border border-gray focus:ring-2 focus:ring-light-green'>
 							<option value={true}>True</option>
 							<option value={false}>False</option>
 						</select>

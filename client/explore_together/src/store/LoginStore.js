@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx'
+import io from 'socket.io-client'
 
 export default class LoginStore {
 	_isLogin = false
@@ -8,6 +9,8 @@ export default class LoginStore {
 	_isProfile = false
 	_editProfile = false
 	_city = ''
+	_socket = io.connect('http://localhost:5000')
+	_chat = []
 	constructor() {
 		makeAutoObservable(this)
 	}
@@ -59,5 +62,17 @@ export default class LoginStore {
 	}
 	get city() {
 		return this._city
+	}
+
+	get socket() {
+		return this._socket
+	}
+
+	setChat(chat){
+		console.log(chat)
+		this._chat = chat
+	}
+	get chat() {
+		return this._chat
 	}
 }

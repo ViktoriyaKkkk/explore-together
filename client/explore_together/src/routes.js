@@ -15,6 +15,7 @@ import User from './pages/User'
 import Search from './pages/Search'
 import Participant from './pages/Participant'
 import Report from './pages/Report'
+import Dialogs from './pages/Dialogs'
 
 
 export const routes = [
@@ -77,6 +78,14 @@ export const routes = [
 	{
 		path: '/report',
 		Component: Report
+	},
+	{
+		path: '/dialogs/:id',
+		Component: Dialogs
+	},
+	{
+		path: '/dialogs',
+		Component: Dialogs
 	}
 
 ]

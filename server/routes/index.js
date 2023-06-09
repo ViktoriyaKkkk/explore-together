@@ -11,6 +11,7 @@ import levelRouter from "./levelRouter.js";
 import authRouter from "./authRouter.js";
 import searchRouter from "./searchRouter.js";
 import reportRouter from './reportRouter.js'
+import messageRouter from './messageRouter.js'
 const router = Router()
 
 router.use('/city', cityRouter)
@@ -25,5 +26,6 @@ router.use('/level', levelRouter)
 router.use('/search', searchRouter)
 router.use('/auth', authRouter)
 router.use('/report', reportRouter)
+router.use('/message', messageRouter)
 
 export default router;

@@ -20,8 +20,8 @@ const CreateMiddle = observer(({document, load, createFunc, dependName, dependen
 			})
 			AdminInstance.setIsCreating(false)
 		}}>
-			<div className='flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600'>
-				<h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+			<div className='flex items-start justify-between p-4 border-b rounded-t border-gray'>
+				<h3 className='text-xl place-self-center font-semibold text-white'>
 					Создание новой записи в документе {document}
 				</h3>
 				<button type='button' onClick={() => {
@@ -36,7 +36,7 @@ const CreateMiddle = observer(({document, load, createFunc, dependName, dependen
 			</div>
 
 			<div className='p-6 space-y-6'>
-				<label className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>{dependName}: </label>
+				<label className='inline text-xl font-semibold text-white'>{dependName}: </label>
 				<select value={dependence} onChange={e => setDependence(e.target.value)}
 								className='placeholder-light-gray block w-full px-4 py-2 mt-2 text-white bg-black border
 							 border-gray rounded-md focus:ring-2 focus:ring-light-green focus:outline-none'>
@@ -49,8 +49,8 @@ const CreateMiddle = observer(({document, load, createFunc, dependName, dependen
 				</select>
 			</div>
 
-			<div className='p-6 space-y-6'>
-				<label htmlFor='name' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Name: </label>
+			<div className='px-6 pb-6 space-y-6'>
+				<label htmlFor='name' className='inline text-xl font-semibold text-white'>name: </label>
 				<input id='name' type='name' name='name' placeholder='name' autoComplete='name'
 							 value={name} onChange={e => setName(e.target.value)}
 							 className='placeholder-light-gray block w-full px-4 py-2 mt-2 text-white bg-black border

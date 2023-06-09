@@ -65,6 +65,13 @@ const ReportSchema = new Schema({
     processed: {type: Boolean, required:true, default:false}
 })
 
+const MessageListSchema = new Schema({
+    searchId:{type:Schema.Types.ObjectId, ref:'Search', required:true},
+    author:{type:Schema.Types.ObjectId, ref:'User', required:true},
+    message:{type: String, required:true},
+    time:{type: String, required:true}
+})
+
 const City = model('City', CitySchema)
 const Topic = model('Topic', TopicSchema)
 const Section = model('Section', SectionSchema)
@@ -78,6 +85,7 @@ const Role = model('Role', RoleSchema)
 const User = model('User', UserSchema)
 const Search = model('Search', SearchSchema)
 const Report = model('Report', ReportSchema)
+const MessageList = model('MessageList', MessageListSchema)
 
 export {
     City,
@@ -92,5 +100,6 @@ export {
     Role,
     User,
     Search,
-    Report
+    Report,
+    MessageList
 }

@@ -135,14 +135,14 @@ const Main = observer(() => {
 			<div className="absolute w-full -z-10 h-screen [mask-image:linear-gradient(0deg,black,transparent)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
 			</div>
 			<div
-				className="flex h-screen pt-14 flex-wrap align-middle">
-				<section className='max-w-4xl self-center p-6 my-auto mx-auto rounded-md shadow-md bg-black drop-shadow-[0_0_35px_rgba(64,147,107,0.9)]'>
-					<h2 className='block text-center font-bold text-2xl lg:text-3xl text-white'>Создание запроса на поиск
+				className="flex h-screen pt-12 flex-wrap align-middle">
+				<section className='max-w-4xl self-center p-6 my-auto mx-auto rounded-md shadow-md bg-black drop-shadow-[0_0_25px_rgba(64,147,107,0.9)]'>
+					<h2 className='block text-center font-bold text-xl lg:text-2xl text-white'>Создание запроса на поиск
 						партнеров</h2>
 					<form>
-						<div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
+						<div className='grid grid-cols-1 gap-3 mt-4 sm:grid-cols-2'>
 							<div>
-								<label className='block text-xl text-white' htmlFor='username'>Название запроса</label>
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='username'>Название запроса</label>
 								<input value={searchName} onChange={e => setSearchName(e.target.value)}
 											 onBlur={e => {
 												 setBluredName(true)
@@ -150,22 +150,22 @@ const Main = observer(() => {
 											 }}
 											 placeholder={'Название запроса на поиск'}
 											 id='name' type='text'
-											 className={clsx('placeholder-light-gray block w-full px-4 py-2 mt-2 text-white bg-black border ' +
-												 'border-gray rounded-md focus:ring-2 ' +
-												 'focus:ring-light-green focus:outline-none', nameErr && bluredName && 'ring-2 border-none ring-red focus:ring-red')} />
+											 className={clsx('placeholder-light-gray text-sm block w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
+												 'border-gray rounded-md focus:ring-2 focus:ring-light-green focus:outline-none', nameErr && bluredName &&
+												 'ring-2 border-none ring-red focus:ring-red')} />
 								{
-									nameErr && bluredName && <p className='absolute text-red'>{nameErr}</p>
+									nameErr && bluredName && <p className='absolute text-red text-sm'>{nameErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Тематика</label>
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='passwordConfirmation'>Тематика</label>
 								<select value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)}
 												onBlur={e => {
 													setBluredTopic(true)
 													validateTopic()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', topicErr && bluredTopic && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите тему</option>
@@ -176,19 +176,20 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									topicErr && bluredTopic && <p className='absolute text-red'>{topicErr}</p>
+									topicErr && bluredTopic && <p className='absolute text-red text-sm'>{topicErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Раздел</label>
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
+											 htmlFor='passwordConfirmation'>Раздел</label>
 								<select disabled={!selectedTopic} value={selectedSection}
 												onChange={(e) => setSelectedSection(e.target.value)}
 												onBlur={e => {
 													setBluredSection(true)
 													validateSection()
 												}}
-												className={clsx('block disabled:cursor-not-allowed  disabled:text-gray w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm disabled:cursor-not-allowed  disabled:text-gray w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', sectionErr && bluredSection && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value='0'>Выберите раздел</option>
@@ -199,19 +200,19 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									sectionErr && bluredSection && <p className='absolute text-red'>{sectionErr}</p>
+									sectionErr && bluredSection && <p className='absolute text-red text-sm'>{sectionErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Уровень</label>
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='passwordConfirmation'>Уровень</label>
 								<select disabled={!selectedSection} value={selectedLevel}
 												onChange={(e) => setSelectedLevel(e.target.value)}
 												onBlur={e => {
 													setBluredLevel(true)
 													validateLevel()
 												}}
-												className={clsx('block disabled:cursor-not-allowed disabled:text-gray w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm disabled:cursor-not-allowed disabled:text-gray w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', levelErr && bluredLevel && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите уровень</option>
@@ -222,19 +223,20 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									levelErr && bluredLevel && <p className='absolute text-red'>{levelErr}</p>
+									levelErr && bluredLevel && <p className='absolute text-red text-sm'>{levelErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Длительность совместного
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
+											 htmlFor='passwordConfirmation'>Длительность совместного
 									обучения</label>
 								<select value={selectedDuration} onChange={(e) => setSelectedDuration(e.target.value)}
 												onBlur={e => {
 													setBluredDuration(true)
 													validateDuration()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', durationErr && bluredDuration && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите длительность</option>
@@ -245,18 +247,19 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									durationErr && bluredDuration && <p className='absolute text-red'>{durationErr}</p>
+									durationErr && bluredDuration && <p className='absolute text-red text-sm'>{durationErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Частота встреч</label>
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
+											 htmlFor='passwordConfirmation'>Частота встреч</label>
 								<select value={selectedPeriodicity} onChange={(e) => setSelectedPeriodicity(e.target.value)}
 												onBlur={e => {
 													setBluredPeriodicity(true)
 													validatePeriodicity()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', periodicityErr && bluredPeriodicity && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите частоту</option>
@@ -267,19 +270,20 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									periodicityErr && bluredPeriodicity && <p className='absolute text-red'>{periodicityErr}</p>
+									periodicityErr && bluredPeriodicity && <p className='absolute text-red text-sm'>{periodicityErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Количество времени в
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
+											 htmlFor='passwordConfirmation'>Количество часов в
 									день</label>
 								<select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}
 												onBlur={e => {
 													setBluredTime(true)
 													validateTime()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', timeErr && bluredTime && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите количество времени</option>
@@ -290,19 +294,20 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									timeErr && bluredTime && <p className='absolute text-red'>{timeErr}</p>
+									timeErr && bluredTime && <p className='absolute text-red text-sm'>{timeErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Формат совместного
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
+											 htmlFor='passwordConfirmation'>Формат совместного
 									обучения</label>
 								<select value={selectedFormat} onChange={(e) => setSelectedFormat(e.target.value)}
 												onBlur={e => {
 													setBluredFormat(true)
 													validateFormat()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', formatErr && bluredFormat && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите формат</option>
@@ -313,19 +318,19 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									formatErr && bluredFormat && <p className='absolute text-red'>{formatErr}</p>
+									formatErr && bluredFormat && <p className='absolute text-red text-sm'>{formatErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Город</label>
+								<label className='block text-white' htmlFor='passwordConfirmation'>Город</label>
 								<select disabled={selectedFormat !== '641e114f2945eabd89d70189'} value={selectedCity}
 												onChange={(e) => setSelectedCity(e.target.value)}
 												onBlur={e => {
 													setBluredCity(true)
 													validateCity()
 												}}
-												className={clsx('block disabled:cursor-not-allowed disabled:text-gray w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm disabled:cursor-not-allowed disabled:text-gray w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none', cityErr && bluredCity && selectedFormat === '641e114f2945eabd89d70189'
 													&& 'border-none ring-2 ring-red focus:ring-red')}>
@@ -338,15 +343,15 @@ const Main = observer(() => {
 								</select>
 								{
 									cityErr && bluredCity && selectedFormat === '641e114f2945eabd89d70189' &&
-									<p className='absolute text-red'>{cityErr}</p>
+									<p className='absolute text-red text-sm'>{cityErr}</p>
 								}
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Число участников
+								<label className='block text-white' htmlFor='passwordConfirmation'>Число участников
 									совместного обучения</label>
 								<select value={selectedNumberOfPeople} onChange={(e) => setSelectedNumberOFPeople(e.target.value)}
-												className='block w-full px-4 py-2 mt-2 text-white bg-black border border-gray rounded-md
+												className='block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border border-gray rounded-md
 											focus:border-dark-green focus:shadow-light-green focus:ring-2 focus:ring-light-green focus:outline-none'>
 									<option value={' '}>Выберите число людей</option>
 									<option value={1}>1</option>
@@ -360,11 +365,11 @@ const Main = observer(() => {
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Выберите пол
+								<label className='block text-white' htmlFor='passwordConfirmation'>Пол
 									участников</label>
 								<select value={selectedParticipantsGender}
 												onChange={(e) => setSelectedParticipantsGender(e.target.value)}
-												className='block w-full px-4 py-2 mt-2 text-white bg-black border border-gray rounded-md
+												className='block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border border-gray rounded-md
 											focus:border-dark-green focus:shadow-light-green focus:ring-2 focus:ring-light-green focus:outline-none'>
 									<option value={''}>Выберите пол участников</option>
 									<option value={'Жен'}>Женский</option>
@@ -374,14 +379,15 @@ const Main = observer(() => {
 							</div>
 
 							<div>
-								<label className='block text-xl text-white' htmlFor='passwordConfirmation'>Выберите возрастной
+								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl mr-5'
+											 htmlFor='passwordConfirmation'>Возрастной
 									диапазон участников</label>
 								<select value={selectedAges} onChange={(e) => setSelectedAges(e.target.value)}
 												onBlur={e => {
 													setBluredAge(true)
 													validateAge()
 												}}
-												className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+												className={clsx('block text-sm w-full px-4 py-1.5 mt-2 text-white bg-black border ' +
 													'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													'focus:ring-light-green focus:outline-none ', ageErr && bluredAge && 'border-none ring-2 ring-red focus:ring-red')}>
 									<option disabled={true} value={0}>Выберите возрастной диапазон</option>
@@ -402,7 +408,7 @@ const Main = observer(() => {
 							<button onClick={startSearch} type='button'
 											disabled={nameErr || topicErr || sectionErr || levelErr || durationErr
 												|| periodicityErr || timeErr || formatErr || (cityErr && selectedFormat === '641e114f2945eabd89d70189') || ageErr}
-											className='px-6 disabled:cursor-not-allowed uppercase py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
+											className='px-6 text-sm disabled:cursor-not-allowed uppercase py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
 							hover:bg-light-green focus:outline-none'>Начать поиск
 							</button>
 						</div>
