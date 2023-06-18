@@ -14,6 +14,11 @@ import { createSearch } from '../api/api.search'
 import { useValidation } from '../utils/useValidation'
 import { readCities } from '../api/api.city'
 import { clsx } from 'clsx'
+import { useSearch } from '../utils/useSearch'
+import * as mobx from 'mobx'
+import { useLocation } from 'react-router-dom'
+import Toast from './Toast'
+import { Toaster } from 'react-hot-toast'
 
 
 const Main = observer(() => {
@@ -25,11 +30,17 @@ const Main = observer(() => {
 	const [bluredName, setBluredName] = useState(false)
 
 	const [topics, errorTopic] = useTopics()
+	topics.sort((a, b) => {
+		return a.name.localeCompare(b.name); // по алфавиту (по возрастанию)
+	})
 	const [selectedTopic, setSelectedTopic] = useState(0)
 	const [topicErr, validateTopic] = useValidation(selectedTopic, { isZero: true })
 	const [bluredTopic, setBluredTopic] = useState(false)
 
 	const [sections, errorSection] = useSections()
+	sections.sort((a, b) => {
+		return a.name.localeCompare(b.name); // по алфавиту (по возрастанию)
+	})
 	const bundlOfSections = useMemo(() => {
 		if (selectedTopic !== 0) {
 			return sections.filter((section) => {
@@ -115,7 +126,7 @@ const Main = observer(() => {
 			params = [...params, selectedParticipantsGender]
 		}
 		// console.log(...params)
-		createSearch(...params).then((data) => alert(data))
+		createSearch(...params).then((data) => Toast('ok','Внимание!', data))
 		// console.log(params)
 	}
 
@@ -129,19 +140,50 @@ const Main = observer(() => {
 		}
 	}, [citiesByName, selectedFormat])
 
+	const [searches, err, load] = useSearch()
+	const chats = useMemo(() => searches?.filter(search => {
+		let res = false
+		search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
+			if (item === userStore._user.id) {
+				res = true
+			}
+		})
+		return res
+	}), [searches, userStore])
+
+	useMemo(()=>chats?.forEach((item)=>{
+		userStore.socket.emit('join_room', item._id)
+		console.log('joined ', item._id)
+	}),[chats,userStore.socket])
+
+	const location = useLocation()
+	useEffect(() => {
+		userStore.socket.on('receive_message', (data) => {
+			userStore.setChat([...userStore.chat, data])
+
+			if (data.searchId !== location.pathname.split('/')[2]) {
+				userStore.setNotifications([...userStore.notifications, data])
+				console.log('zzzzzzzzzz', mobx.toJS(userStore.notifications))
+			}
+		})
+		console.log(userStore.socket)
+	}, [])
+
 	return (<>
+			<Toaster/>
 			<div className="absolute w-full -z-20 h-screen bg-black">
 			</div>
 			<div className="absolute w-full -z-10 h-screen [mask-image:linear-gradient(0deg,black,transparent)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
 			</div>
 			<div
-				className="flex h-screen pt-12 flex-wrap align-middle">
-				<section className='max-w-4xl self-center p-6 my-auto mx-auto rounded-md shadow-md bg-black drop-shadow-[0_0_25px_rgba(64,147,107,0.9)]'>
-					<h2 className='block text-center font-bold text-xl lg:text-2xl text-white'>Создание запроса на поиск
+				className="flex h-screen pt-12 flex-wrap align-middle overflow-y-scroll">
+				<section className='max-w-4xl sm:w-fit w-2/3 self-center py-3 px-6 xl:p-6 my-5 md:my-auto mx-auto rounded-md shadow-md bg-black
+				drop-shadow-[0_0_25px_rgba(64,147,107,0.9)]'>
+					<h2 className='block text-center font-bold text-xl xl:text-2xl text-white'>Создание запроса на поиск
 						партнеров</h2>
 					<form>
 						<div className='grid grid-cols-1 gap-3 mt-4 sm:grid-cols-2'>
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='username'>Название запроса</label>
 								<input value={searchName} onChange={e => setSearchName(e.target.value)}
 											 onBlur={e => {
@@ -154,11 +196,11 @@ const Main = observer(() => {
 												 'border-gray rounded-md focus:ring-2 focus:ring-light-green focus:outline-none', nameErr && bluredName &&
 												 'ring-2 border-none ring-red focus:ring-red')} />
 								{
-									nameErr && bluredName && <p className='absolute text-red text-sm'>{nameErr}</p>
+									nameErr && bluredName && <p className='absolute -bottom-5 text-red text-sm'>{nameErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='passwordConfirmation'>Тематика</label>
 								<select value={selectedTopic} onChange={e => setSelectedTopic(e.target.value)}
 												onBlur={e => {
@@ -180,7 +222,7 @@ const Main = observer(() => {
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
 											 htmlFor='passwordConfirmation'>Раздел</label>
 								<select disabled={!selectedTopic} value={selectedSection}
@@ -200,11 +242,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									sectionErr && bluredSection && <p className='absolute text-red text-sm'>{sectionErr}</p>
+									sectionErr && bluredSection && <p className='absolute -bottom-5 text-red text-sm'>{sectionErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl' htmlFor='passwordConfirmation'>Уровень</label>
 								<select disabled={!selectedSection} value={selectedLevel}
 												onChange={(e) => setSelectedLevel(e.target.value)}
@@ -223,11 +265,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									levelErr && bluredLevel && <p className='absolute text-red text-sm'>{levelErr}</p>
+									levelErr && bluredLevel && <p className='absolute -bottom-5 text-red text-sm'>{levelErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
 											 htmlFor='passwordConfirmation'>Длительность совместного
 									обучения</label>
@@ -247,11 +289,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									durationErr && bluredDuration && <p className='absolute text-red text-sm'>{durationErr}</p>
+									durationErr && bluredDuration && <p className='absolute -bottom-5 text-red text-sm'>{durationErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
 											 htmlFor='passwordConfirmation'>Частота встреч</label>
 								<select value={selectedPeriodicity} onChange={(e) => setSelectedPeriodicity(e.target.value)}
@@ -270,11 +312,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									periodicityErr && bluredPeriodicity && <p className='absolute text-red text-sm'>{periodicityErr}</p>
+									periodicityErr && bluredPeriodicity && <p className='absolute -bottom-5 text-red text-sm'>{periodicityErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
 											 htmlFor='passwordConfirmation'>Количество часов в
 									день</label>
@@ -294,11 +336,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									timeErr && bluredTime && <p className='absolute text-red text-sm'>{timeErr}</p>
+									timeErr && bluredTime && <p className='absolute -bottom-5 text-red text-sm'>{timeErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl'
 											 htmlFor='passwordConfirmation'>Формат совместного
 									обучения</label>
@@ -318,11 +360,11 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									formatErr && bluredFormat && <p className='absolute text-red text-sm'>{formatErr}</p>
+									formatErr && bluredFormat && <p className='absolute -bottom-5 text-red text-sm'>{formatErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white' htmlFor='passwordConfirmation'>Город</label>
 								<select disabled={selectedFormat !== '641e114f2945eabd89d70189'} value={selectedCity}
 												onChange={(e) => setSelectedCity(e.target.value)}
@@ -343,11 +385,11 @@ const Main = observer(() => {
 								</select>
 								{
 									cityErr && bluredCity && selectedFormat === '641e114f2945eabd89d70189' &&
-									<p className='absolute text-red text-sm'>{cityErr}</p>
+									<p className='absolute -bottom-5 text-red text-sm'>{cityErr}</p>
 								}
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white' htmlFor='passwordConfirmation'>Число участников
 									совместного обучения</label>
 								<select value={selectedNumberOfPeople} onChange={(e) => setSelectedNumberOFPeople(e.target.value)}
@@ -364,7 +406,7 @@ const Main = observer(() => {
 								</select>
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white' htmlFor='passwordConfirmation'>Пол
 									участников</label>
 								<select value={selectedParticipantsGender}
@@ -378,7 +420,7 @@ const Main = observer(() => {
 								</select>
 							</div>
 
-							<div>
+							<div className='relative'>
 								<label className='block text-white after:content-["*"] after:absolute after:ml-0.5 after:text-light-green after:text-xl mr-5'
 											 htmlFor='passwordConfirmation'>Возрастной
 									диапазон участников</label>
@@ -398,13 +440,13 @@ const Main = observer(() => {
 									}
 								</select>
 								{
-									ageErr && bluredAge && <p className='absolute text-red'>{ageErr}</p>
+									ageErr && bluredAge && <p className='absolute -bottom-5 text-red'>{ageErr}</p>
 								}
 							</div>
 
 						</div>
 
-						<div className='flex justify-center mt-6'>
+						<div className='flex justify-center mt-3 xl:mt-6'>
 							<button onClick={startSearch} type='button'
 											disabled={nameErr || topicErr || sectionErr || levelErr || durationErr
 												|| periodicityErr || timeErr || formatErr || (cityErr && selectedFormat === '641e114f2945eabd89d70189') || ageErr}

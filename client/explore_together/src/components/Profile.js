@@ -8,6 +8,8 @@ import { updateUsers } from '../api/api.user'
 import { observer } from 'mobx-react-lite'
 import { useValidation } from '../utils/useValidation'
 import { clsx } from 'clsx'
+import Toast from './Toast'
+import { Toaster } from 'react-hot-toast'
 
 const Profile = observer(() => {
 
@@ -33,8 +35,8 @@ const Profile = observer(() => {
 
 	const [gender,setGender] = useState('')
 	const [socialNetwork,setSocialNetwork] = useState('')
-	const [snErr, validateSn] = useValidation(socialNetwork, {isEmpty: true})
-	const [bluredSn, setBluredSn] = useState(false)
+	// const [snErr, validateSn] = useValidation(socialNetwork, {isEmpty: true})
+	// const [bluredSn, setBluredSn] = useState(false)
 
 	const [info,setInfo] = useState('')
 
@@ -51,20 +53,20 @@ const Profile = observer(() => {
 			if (userStore.editProfile) {
 				updateUsers(userStore.user.id, name, email,'', password, newPassword, gender, socialNetwork, info).then(r=> {
 					if (!r.response || r.response.status === 200){
-						alert("Ваши персональные данные изменены")
+						Toast('ok','Внимание!',"Ваши персональные данные изменены")
 						load()
 						userStore.setEditProfile(false)
 					} else {
-						alert(r.response.data.message)
+						Toast('err','Ошибка!',r.response.data.message)
 					}
 				})
 			}
 			else {
 				userStore.setEditProfile(true)
 			}
-		}} dis={userStore.editProfile && (nameErr || emailErr || passwordErr || newPasswordErr || snErr)}>
+		}} dis={userStore.editProfile && (nameErr || emailErr || passwordErr || newPasswordErr)}>
 			<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
-				<h3 className='text-xl mr-7 font-semibold text-white'>
+				<h3 className='md:text-xl text-base mr-7 font-semibold text-white'>
 					{
 						userStore.editProfile ? 'Редактирование персональных данных' : 'Персональные данные'
 					}
@@ -81,41 +83,41 @@ const Profile = observer(() => {
 			</div>
 
 			{
-				userStore.editProfile ? 	<div className='grid grid-cols-1 m-5 gap-6 md:grid-cols-2'>
-						<div className='space-y-1'>
-							<label htmlFor='name' className='inline text-xl font-semibold text-white'>Имя: </label>
+				userStore.editProfile ? 	<div className='grid grid-cols-1 m-5 md:gap-6 gap-4 md:grid-cols-2'>
+						<div className='space-y-1 relative'>
+							<label htmlFor='name' className='inline md:text-xl text-sm font-semibold text-white'>Имя: </label>
 							<input id='name' type='name' name='name' placeholder='Имя' autoComplete='name'
 										 value={name} onChange={e => setName(e.target.value)}
 										 onBlur={e=> {
 											 setBluredName(true)
 											 validateName()
 										 }}
-										 className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+										 className={clsx('block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border ' +
 											 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 											 'focus:ring-light-green focus:outline-none', nameErr && bluredName && 'border-none ring-2 ring-red focus:ring-red')}/>
 							{
-								nameErr && bluredName && <p className='fixed m-0'>{nameErr}</p>
+								nameErr && bluredName && <p className='absolute -bottom-5 md:text-base text-sm text-red'>{nameErr}</p>
 							}
 						</div>
 
 						<div className='space-y-1'>
-							<label htmlFor='email' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Эл. почта: </label>
+							<label htmlFor='email' className='inline md:text-xl text-sm font-semibold text-gray-500 dark:text-gray-400'>Эл. почта: </label>
 							<input id='email' type='email' name='email' placeholder='Почта' autoComplete='email'
 										 value={email} onChange={e => setEmail(e.target.value)}
 										 onBlur={e=> {
 											 setBluredEmail(true)
 											 validateEmail()
 										 }}
-										 className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+										 className={clsx('block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border ' +
 											 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 											 'focus:ring-light-green focus:outline-none', emailErr && bluredEmail && 'border-none ring-2 ring-red focus:ring-red')}/>
 							{
-								emailErr && bluredEmail && <p className='absolute'>{emailErr}</p>
+								emailErr && bluredEmail && <p className='absolute -bottom-5 md:text-base text-sm text-red'>{emailErr}</p>
 							}
 						</div>
 
 						<div className='space-y-1'>
-							<label htmlFor='email' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400
+							<label htmlFor='email' className='inline md:text-xl text-sm font-semibold text-gray-500 dark:text-gray-400
 							after:content-["*"] after:ml-0.5 after:text-light-green after:text-xl'>Пароль:</label>
 							<input id='password' type='password' name='password' placeholder='Пароль' autoComplete='current-password'
 										 value={password} onChange={e => setPassword(e.target.value)}
@@ -123,34 +125,34 @@ const Profile = observer(() => {
 											 setBluredPassword(true)
 											 validatePassword()
 										 }}
-										 className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+										 className={clsx('block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border ' +
 											 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 											 'focus:ring-light-green focus:outline-none', passwordErr && bluredPassword && 'border-none ring-2 ring-red focus:ring-red')}/>
 							{
-								passwordErr && bluredPassword && <p className='absolute'>{passwordErr}</p>
+								passwordErr && bluredPassword && <p className='absolute -bottom-5 md:text-base text-sm text-red'>{passwordErr}</p>
 							}
 						</div>
 
 						<div className='space-y-1'>
-							<label htmlFor='newpassword' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Новый пароль: </label>
+							<label htmlFor='newpassword' className='inline md:text-xl text-sm font-semibold text-gray-500 dark:text-gray-400'>Новый пароль: </label>
 							<input id='newpassword' type='password' name='password' placeholder='Пароль' autoComplete='current-password'
 										 value={newPassword} onChange={e => setNewPassword(e.target.value)}
 										 onBlur={e=> {
 											 setBluredNewPassword(true)
 											 validateNewPassword()
 										 }}
-										 className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+										 className={clsx('block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border ' +
 											 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 											 'focus:ring-light-green focus:outline-none', newPasswordErr && bluredNewPassword && 'border-none ring-2 ring-red focus:ring-red')}/>
 							{
-								newPasswordErr && bluredNewPassword && <p className='absolute'>{newPasswordErr}</p>
+								newPasswordErr && bluredNewPassword && <p className='absolute -bottom-5 md:text-base text-sm text-red'>{newPasswordErr}</p>
 							}
 						</div>
 
 						<div className='space-y-1'>
-							<label className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Пол: </label>
+							<label className='inline md:text-xl text-sm font-semibold text-gray-500 dark:text-gray-400'>Пол: </label>
 							<select value={gender} onChange={e => setGender(e.target.value)}
-											className='block w-full px-4 py-2 mt-2 text-white bg-black border
+											className='block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border
 											 border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2
 											 focus:ring-light-green focus:outline-none'>
 								<option value={'Жен'}>Жен</option>
@@ -159,41 +161,35 @@ const Profile = observer(() => {
 						</div>
 
 						<div className='space-y-1 relative'>
-							<label htmlFor='socialNetwork' className='inline text-xl font-semibold text-gray-500 dark:text-gray-400'>Социальная сеть: </label>
+							<label htmlFor='socialNetwork' className='inline md:text-xl text-sm font-semibold text-gray-500 dark:text-gray-400'>Социальная сеть: </label>
 							<input id='socialNetwork' type='socialNetwork' name='socialNetwork' placeholder='Соцсеть' autoComplete='socialNetwork'
 										 value={socialNetwork} onChange={e => setSocialNetwork(e.target.value)}
-										 onBlur={e=> {
-											 setBluredSn(true)
-											 validateSn()
-										 }}
-										 className={clsx('block w-full px-4 py-2 mt-2 text-white bg-black border ' +
+										 className={clsx('block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border ' +
 											 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
-											 'focus:ring-light-green focus:outline-none', snErr && bluredSn && 'border-none ring-2 ring-red focus:ring-red')}/>
-							{
-								snErr && bluredSn && <p className='absolute'>{snErr}</p>
-							}
+											 'focus:ring-light-green focus:outline-none')}/>
 						</div>
 
 						<div className='space-y-1'>
-							<label htmlFor='info' className='inline text-xl font-semibold text-white'>Информация: </label>
+							<label htmlFor='info' className='inline md:text-xl text-sm font-semibold text-white'>Информация: </label>
 							<input id='info' type='info' name='info' placeholder='Информация' autoComplete='info'
 										 value={info} onChange={e => setInfo(e.target.value)}
-										 className='block w-full px-4 py-2 mt-2 text-white bg-black border
+										 className='block w-full md:text-base text-sm px-4 md:py-2 p-1 mt-2 text-white bg-black border
 											 border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2
 											 focus:ring-light-green focus:outline-none'/>
 						</div>
 					</div>
-					: <div className='px-6 py-4 space-y-2 text-white text-xl font-semibold'>
+					: <div className='px-6 py-4 space-y-2 text-white md:text-xl text-base font-semibold'>
 						<p>Имя: {user.name}</p>
 						<p>Эл. почта: {user.email}</p>
 						<p>Пол: {user.gender}</p>
-						<p>Социальная сеть: {user.socialNetwork}</p>
+						{
+							user.socialNetwork && <p>Социальная сеть: {user.socialNetwork}</p>
+						}
 						{
 							user.info && 	<p>Информация: {user.info}</p>
 						}
 					</div>
 			}
-
 		</ReadModal>
 	)
 })

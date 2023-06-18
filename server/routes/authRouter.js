@@ -10,8 +10,7 @@ authRouter.post('/registration', [
   check("name", "Поле Имя не может быть пустым").notEmpty(),
     check("email", "Поле email не может быть пустым").notEmpty(),
         check('password', "Пароль должен содержать от 6 до 20 символов").isLength({min:6, max:20}),
-        check("gender", "Вы не указали ваш пол").notEmpty(),
-    check("socialNetwork", "Поле socialNetwork не может быть пустым").notEmpty()
+        check("gender", "Вы не указали ваш пол").notEmpty()
     ],
     AuthController.registration)
 authRouter.post('/login', AuthController.login)

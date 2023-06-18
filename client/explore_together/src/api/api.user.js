@@ -1,9 +1,9 @@
 import {$authHost, $host} from './api.interceptor'
 import jwtDecode from 'jwt-decode'
 
-export const registration = async (name, email, password, gender, socialNetwork) => {
+export const registration = async (name, email, password, gender) => {
 	try {
-		const { data } = await $host.post('/auth/registration', {email, password, name, gender, socialNetwork})
+		const { data } = await $host.post('/auth/registration', {email, password, name, gender})
 		localStorage.setItem("token", data)
 		return jwtDecode(data)
 	} catch (e) {
@@ -37,9 +37,13 @@ export const check = async () => {
 export const readUsers = async () => {
 	try {
 		const { data } = await $authHost.get('/auth')
+		console.log(data)
 		return data
+
 	} catch (e) {
+		console.log(e)
 		return e
+
 	}
 }
 

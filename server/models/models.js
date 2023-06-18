@@ -72,6 +72,12 @@ const MessageListSchema = new Schema({
     time:{type: String, required:true}
 })
 
+const QuestionSchema = new Schema({
+    sender: {type: Schema.Types.ObjectId, ref:'User', required:true},
+    questionText: {type: String, required:true},
+    answerText: {type: String}
+})
+
 const City = model('City', CitySchema)
 const Topic = model('Topic', TopicSchema)
 const Section = model('Section', SectionSchema)
@@ -86,6 +92,7 @@ const User = model('User', UserSchema)
 const Search = model('Search', SearchSchema)
 const Report = model('Report', ReportSchema)
 const MessageList = model('MessageList', MessageListSchema)
+const Question = model('Question', QuestionSchema)
 
 export {
     City,
@@ -101,5 +108,6 @@ export {
     User,
     Search,
     Report,
-    MessageList
+    MessageList,
+    Question
 }

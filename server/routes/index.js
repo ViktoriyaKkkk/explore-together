@@ -12,6 +12,7 @@ import authRouter from "./authRouter.js";
 import searchRouter from "./searchRouter.js";
 import reportRouter from './reportRouter.js'
 import messageRouter from './messageRouter.js'
+import questionRouter from './questionRouter.js'
 const router = Router()
 
 router.use('/city', cityRouter)
@@ -27,5 +28,6 @@ router.use('/search', searchRouter)
 router.use('/auth', authRouter)
 router.use('/report', reportRouter)
 router.use('/message', messageRouter)
+router.use('/question', questionRouter)
 
 export default router;

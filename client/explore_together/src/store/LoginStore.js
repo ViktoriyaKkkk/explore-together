@@ -11,6 +11,8 @@ export default class LoginStore {
 	_city = ''
 	_socket = io.connect('http://localhost:5000')
 	_chat = []
+	_notifications = []
+	_isLoading = true
 	constructor() {
 		makeAutoObservable(this)
 	}
@@ -69,10 +71,23 @@ export default class LoginStore {
 	}
 
 	setChat(chat){
-		console.log(chat)
 		this._chat = chat
 	}
 	get chat() {
 		return this._chat
+	}
+
+	setNotifications(notifications){
+		this._notifications = notifications
+	}
+	get notifications() {
+		return this._notifications
+	}
+
+	setIsLoading(isLoading){
+		this._isLoading = isLoading
+	}
+	get isLoading() {
+		return this._isLoading
 	}
 }

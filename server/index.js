@@ -13,20 +13,31 @@ const DB_URL = 'mongodb+srv://root:gemini2903@cluster0.5cjniay.mongodb.net/?retr
 const app = express()
 const server = http.createServer(app)
 app.use(cors())
+app.use(function(req, res, next) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	next();
+});
 app.use(express.json())
 app.use('/api', router)
 const io = new Server(server, {
 	cors: {
-		origin: 'http://localhost:3000',
+		origin: '*',
 		methods: ['GET', 'POST'],
 	},
 })
 
 io.on('connection', (socket) => {
 	console.log('user connected:', socket.id)
+	socket.on('leave_room', (data) => {
+		socket.leave(data)
+		console.log(`User ${socket.id} joined room ${data}`)
+	})
 	socket.on('join_room', (data) => {
 		socket.join(data)
-		console.log(`User ${socket.id} joined room ${data}`)
+		console.log(`User ${socket.id} left room ${data}`)
 	})
 	socket.on('send_message', (data) => {
 		console.log('receive send mes')

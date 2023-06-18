@@ -16,6 +16,8 @@ import Search from './pages/Search'
 import Participant from './pages/Participant'
 import Report from './pages/Report'
 import Dialogs from './pages/Dialogs'
+import Questions from './pages/Questions'
+import QuestionAdmin from './pages/QuestionAdmin'
 
 
 export const routes = [
@@ -84,8 +86,11 @@ export const routes = [
 		Component: Dialogs
 	},
 	{
-		path: '/dialogs',
-		Component: Dialogs
+		path: '/questions',
+		Component: Questions
+	},
+	{
+		path: '/questionadmin',
+		Component: QuestionAdmin
 	}
-
 ]

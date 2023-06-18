@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useNavigate, useParams } from 'react-router-dom'
+import * as  mobx from 'mobx'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { IoLogoOctocat } from 'react-icons/io'
 import { IconContext } from 'react-icons'
@@ -18,6 +19,10 @@ import ModalLayout from '../components/ModalLayout'
 import { createReports } from '../api/api.report'
 import { useValidation } from '../utils/useValidation'
 import Profile from '../components/Profile'
+import { BsChatDots } from 'react-icons/bs'
+import { FaRegListAlt } from 'react-icons/fa'
+import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { Toaster } from 'react-hot-toast'
 
 const Dialogs = observer(() => {
 	const { userStore, AdminInstance } = useAppContext()
@@ -27,8 +32,9 @@ const Dialogs = observer(() => {
 		}
 	})
 	let { id } = useParams()
-	const [searches, err, load] = useSearch()
 
+	const [searches, err, load] = useSearch()
+	searches.reverse()
 	const chats = useMemo(() => searches?.filter(search => {
 		let res = false
 		search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
@@ -40,7 +46,7 @@ const Dialogs = observer(() => {
 	}), [searches, userStore])
 
 	useMemo(() => {
-		if (typeof id === 'undefined' && typeof chats !== 'undefined' && chats.length !==0) {
+		if (typeof id === 'undefined' && typeof chats !== 'undefined' && chats.length !== 0) {
 			id = chats[0]._id
 		}
 	}, [chats])
@@ -48,8 +54,12 @@ const Dialogs = observer(() => {
 	const navigate = useNavigate()
 	if (id != null && id !== 'undefined') {
 		useMessages(id)
-		userStore.socket.emit('join_room', id)
+		// userStore.socket.emit('join_room', id)
 	}
+
+	// chats?.forEach((item)=>{
+	// 	userStore.socket.emit('join_room', item._id)
+	// })
 
 	// useEffect(async ()=> {
 	// 	const messages = await readMessages(id)
@@ -76,11 +86,16 @@ const Dialogs = observer(() => {
 		}
 	}
 
+	const location = useLocation()
 	useEffect(() => {
-		userStore.socket.on('receive_message', (data) => {
-			userStore.setChat([...userStore.chat, data])
+		let newNotifications = []
+		userStore.notifications.forEach((item) => {
+			if (item.searchId !== location.pathname.split('/')[2]) {
+				newNotifications = [...newNotifications, item]
+			}
 		})
-	}, [userStore.socket])
+		userStore.setNotifications(newNotifications)
+	}, [location,userStore])
 
 	const messagesEndRef = useRef(null)
 
@@ -90,7 +105,7 @@ const Dialogs = observer(() => {
 
 	useEffect(() => {
 		scrollToBottom()
-	} )
+	})
 
 	// const [searches, err, load] = useSearch()
 	//
@@ -106,7 +121,7 @@ const Dialogs = observer(() => {
 
 	const [selectedChat, setSelectedChat] = useState({})
 	useEffect(() => {
-		if (typeof id !== 'undefined' && typeof chats!== 'undefined' && chats !== []) {
+		if (typeof id !== 'undefined' && typeof chats !== 'undefined' && chats !== []) {
 			setSelectedChat(chats?.find(search => {
 				return search._id === id
 			}))
@@ -121,22 +136,41 @@ const Dialogs = observer(() => {
 	}, [users])
 
 	const [reportText, setReportText] = useState('')
-	const [reportErr, validateReport] = useValidation(reportText, {isEmpty: true})
+	const [reportErr, validateReport] = useValidation(reportText, { isEmpty: true })
 	const [bluredReport, setBluredReport] = useState(false)
 
-	if (typeof selectedChat === 'undefined' || typeof id === 'undefined' || Object.keys(usersById).length === 0 || chats === [] ||
-		typeof chats === 'undefined') {
+	const [tab, setTab] = useState('chat')
+	let vh = window.innerHeight * 0.01;
+// Then we set the value in the --vh custom property to the root of the document
+	document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+	if (((id !== 'undefined' && id !== null) && typeof selectedChat === 'undefined') || Object.keys(usersById).length === 0 || typeof chats === 'undefined'){
+	return	<Layout>
+			<div className='absolute w-full -z-20 h-full bg-black'>
+			</div>
+			<div
+				className="absolute w-full -z-10 h-full [mask-image:linear-gradient(0deg,black,transparent)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
+			</div>
+			<div className='h-screen h-[calc(var(--vh, 1vh) * 100)] flex flex-col items-center'>
+			</div>
+		</Layout>
+	} else if (  chats === [] || typeof selectedChat === 'undefined'
+		) {
 		return <Layout>
 			<div className='absolute w-full -z-20 h-full bg-black'>
 			</div>
 			<div
 				className="absolute w-full -z-10 h-full [mask-image:linear-gradient(0deg,black,transparent)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
 			</div>
+			<div className='h-screen h-[calc(var(--vh, 1vh) * 100)] flex flex-col items-center'>
+				<h2 className='my-auto text-3xl text-light-gray text-center font-bold'>У вас пока нет начатых диалогов</h2>
+			</div>
 		</Layout>
 	}
 
 	return (
 		<Layout>
+			<Toaster/>
 			{
 				userStore.isProfile && <Profile />
 			}
@@ -147,7 +181,7 @@ const Dialogs = observer(() => {
 					// userStore.setIsReading('')
 				}}>
 					<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
-						<h3 className='text-xl mr-7 font-semibold text-white place-self-center'>
+						<h3 className='md:text-xl text-base mr-7 font-semibold text-white place-self-center'>
 							Пользователь {userStore.isReading.name}
 						</h3>
 						<button type='button' onClick={() => {
@@ -159,12 +193,13 @@ const Dialogs = observer(() => {
 							<IconContext.Provider value={{ size: '2em' }}><IoClose /></IconContext.Provider>
 						</button>
 					</div>
-					<div className='px-6 py-4 space-y-2 text-white'>
-						<p className='text-xl font-semibold'>Имя: {userStore.isReading.name}</p>
-						<p className='text-xl font-semibold'>Пол: {userStore.isReading.gender}</p>
-						<p className='text-xl font-semibold'>Социальная
+					<div className='md:text-xl text-sm px-6 py-4 space-y-2 text-white'>
+						<p className='font-semibold'>Имя: {userStore.isReading.name}</p>
+						<p className='font-semibold'>Пол: {userStore.isReading.gender}</p>
+						<p className='font-semibold'>Социальная
 							сеть: {userStore.isReading.socialNetwork}</p>
-						<p className='text-xl font-semibold'>Информация: {userStore.isReading.info ? userStore.isReading.info : '-'}</p>
+						<p
+							className='font-semibold'>Информация: {userStore.isReading.info ? userStore.isReading.info : '-'}</p>
 					</div>
 
 				</ReadModal>}
@@ -176,7 +211,7 @@ const Dialogs = observer(() => {
 				alert(`Вы пожаловались на пользователя ${userStore.isReading.name}`)
 			}}>
 				<div className='relative flex items-start justify-center p-4 border-b border-gray rounded-t'>
-					<h3 className='text-xl mr-7 font-semibold text-white place-self-center'>
+					<h3 className='md:text-xl text-lg mr-7 font-semibold text-white place-self-center'>
 						Жалоба на пользователя {userStore.isReading.name}
 					</h3>
 					<button type='button' onClick={() => {
@@ -189,7 +224,7 @@ const Dialogs = observer(() => {
 				</div>
 
 				<div className='p-8 space-y-3'>
-					<label htmlFor='report' className='inline text-xl font-semibold text-white'>Опишите вашу
+					<label htmlFor='report' className='inline md:text-xl text-base font-semibold text-white'>Опишите вашу
 						жалобу: </label>
 					<textarea cols='40' rows='3' id='report' name='report' placeholder='Введите текст жалобы'
 										autoComplete='report'
@@ -227,9 +262,30 @@ const Dialogs = observer(() => {
 				<div className='container h-full w-full flex flex-wrap items-center place-content-center shadow-lg rounded-lg'>
 
 					{/*Chatting*/}
-					<div className='flex h-2/3 w-full lg:w-2/3 rounded-lg bg-black shadow shadow-md drop-shadow-[0_0_35px_rgba(64,147,107,0.9)]'>
+
+					<div
+						className='relative md:pt-0 pt-24 flex md:flex-row md:h-2/3 h-5/6 w-full md:w-11/12 xl:w-2/3 rounded-lg bg-black shadow shadow-md drop-shadow-[0_0_35px_rgba(64,147,107,0.9)]'>
 						{/*chat list*/}
-						<div className='grid grid-cols-1 place-content-start min-w-fit border-r-2 border-gray overflow-y-auto'>
+						<div className='absolute md:hidden w-full top-0 h-24 flex flex-row place-content-between p-5 text-white border-b border-gray'>
+							<IconContext.Provider value={{ size: '2em'}}>
+								<button onClick={()=>setTab('dialogs')} className={clsx('p-2', tab === 'dialogs' && 'text-light-green')}>
+									<FaRegListAlt/>
+								</button>
+								<button onClick={()=>setTab('chat')} className={clsx('p-2 font-bold relative', tab === 'chat' && 'text-light-green')}>
+									<BsChatDots />
+									{
+										userStore.notifications.length !== 0 && <span
+											className=" absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 md:w-3 md:h-3 ml-2 md:text-xs text-base font-semibold text-black bg-light-green
+									rounded-full">{userStore.notifications.length}</span>
+									}
+								</button>
+								<button onClick={()=>setTab('info')} className={clsx('p-2', tab === 'info' && 'text-light-green')}>
+									<AiOutlineInfoCircle/>
+								</button>
+							</IconContext.Provider>
+						</div>
+						<div className={clsx('md:grid grid-cols-1 md:place-content-start place-content-center min-w-full md:min-w-fit ' +
+							'md:border-r-2 border-gray overflow-y-auto', tab !== 'dialogs' && 'hidden')}>
 							{/*<div className='border-b-2 border-gray py-4 px-2'>*/}
 							{/*	<input*/}
 							{/*		type='text'*/}
@@ -238,20 +294,30 @@ const Dialogs = observer(() => {
 							{/*	/>*/}
 							{/*</div>*/}
 
-							{ chats &&
+							{chats &&
 								chats?.map((chat) => {
 									return <button key={chat._id} onClick={() => {
 										navigate(`/dialogs/${chat._id}`)
+										setTab('chat')
 									}}
-																 className={clsx('h-16 flex flex-row justify-items-start w-full py-2 pl-5 pr-3 items-center',
+																 className={clsx('h-16 md:text-base flex flex-row md:justify-items-start w-full py-2 pl-5 pr-3 items-center',
 																	 id === chat._id ? 'border-b-2 border-l-4 border-dark-green' : 'border-b border-gray')}>
-										<div className='w-1/4 text-white'>
+										<div className='w-1/4 text-white relative'>
+											{
+												userStore.notifications.filter((item) => {
+													return (item.searchId === chat._id && item.searchId !==location.pathname.split('/')[2])
+												}).length !== 0 && <span
+													className=' absolute -top-1 -left-3 inline-flex items-center justify-center w-3 h-3 ml-2 text-xs
+													font-semibold text-black bg-light-green rounded-full'>{userStore.notifications.filter((item) => {
+													return item.searchId === chat._id
+												}).length}</span>
+											}
 											<IconContext.Provider value={{ size: '2em', color: 'white' }}>
 												<HiUserGroup />
 											</IconContext.Provider>
 										</div>
 										<div className='w-fit'>
-											<p className='ml-2 text-white text-start'>{chat.name}</p>
+											<p className='ml-2 text-white md:text-base text-2xl text-start'>{chat.name}</p>
 										</div>
 									</button>
 								})
@@ -279,51 +345,59 @@ const Dialogs = observer(() => {
 						{/*end chat list*/}
 
 						{/*message */}
-						<div className='w-full px-5 flex flex-col content-between'>
-							<div className={clsx('scrollbar flex overflow-y-scroll h-5/6 flex-col mt-5', userStore.chat && userStore.chat?.length > 6 &&
-								'scrollbar-thumb-light-gray scrollbar-track-gray scrollbar-thin')}>
-								{
-									userStore.chat.map((message) => {
-										return <div ref={messagesEndRef} className={clsx('flex mt-2', message.author === userStore.user.id ?
-											'justify-end' : 'justify-start')}>
-											{
-												message.author !== userStore.user.id && <div className='relative'><IconContext.Provider value={{ size: '4vh' }}>
-													<button className='px-2.5 py-2.5 text-white' onClick={() => {
-														userStore.setIsReading(usersById[message.author])
-													}}><IoLogoOctocat />
-													</button>
-												<span className='absolute bottom-0 left-2.5 text-gray'>{message.time}</span>
-												</IconContext.Provider></div>
-											}
-											<div className='relative text-white'>
-												<span className={clsx('absolute top-2 font-bold', message.author === userStore.user.id ? ' right-0' : 'left-0')}>
+						<div className={clsx('w-full px-5 flex flex-col content-between', tab !== 'chat' && 'hidden')}>
+							<div
+								className={clsx('scrollbar flex overflow-y-scroll h-5/6 flex-col mt-5', userStore.chat && userStore.chat?.length > 6 &&
+									'scrollbar-thumb-light-gray scrollbar-track-gray scrollbar-thin')}>
+								{ userStore.chat.length === 0 ? <h1 className='text-xl text-gray place-self-center'>Здесь пока нет сообщений</h1> :
+									userStore.chat.map((message,i) => {
+										if (location.pathname.split('/')[2] === message.searchId) {
+											return <div ref={messagesEndRef} key={i}
+																	className={clsx('flex mt-2', message.author === userStore.user.id ?
+																		'justify-end' : 'justify-start')}>
+												{
+													message.author !== userStore.user.id &&
+													<div className='relative'><IconContext.Provider value={{ size: '2em' }}>
+														<button className='px-2.5 py-2.5 text-white' onClick={() => {
+															userStore.setIsReading(usersById[message.author])
+														}}><IoLogoOctocat />
+														</button>
+														<span className='absolute bottom-0 left-2.5 text-gray'>{message.time}</span>
+													</IconContext.Provider></div>
+												}
+												<div className='relative text-white'>
+												<span
+													className={clsx('absolute top-2 font-bold', message.author === userStore.user.id ? ' right-0' : 'left-0')}>
 													{usersById[message.author]['name']}</span>
-												<div
-												className={clsx('mt-10 py-2 px-3',
-													message.author === userStore.user.id ? 'mr-2 bg-dark-green rounded-bl-3xl rounded-tl-3xl rounded-tr-xl' :
-														'ml-2 bg-gray rounded-br-3xl rounded-tr-3xl rounded-tl-xl')}
-											>
-												{message.message}
-											</div></div>
-											{
-												message.author === userStore.user.id && <div className='relative'><IconContext.Provider value={{ size: '2em' }}>
-													<button className='px-2.5 py-2.5 text-white' onClick={() => {
-														userStore.setIsProfile(true)
-													}}><TbCat />
-													</button>
-													<span className='absolute bottom-0 right-2.5 text-gray'>{message.time}</span>
-												</IconContext.Provider></div>
-											}
-										</div>
+													<div
+														className={clsx('mt-10 py-2 px-3',
+															message.author === userStore.user.id ? 'mr-2 bg-dark-green rounded-bl-3xl rounded-tl-3xl rounded-tr-xl' :
+																'ml-2 bg-gray rounded-br-3xl rounded-tr-3xl rounded-tl-xl')}
+													>
+														{message.message}
+													</div>
+												</div>
+												{
+													message.author === userStore.user.id &&
+													<div className='relative'><IconContext.Provider value={{ size: '2em' }}>
+														<button className='px-2.5 py-2.5 text-white' onClick={() => {
+															userStore.setIsProfile(true)
+														}}><TbCat />
+														</button>
+														<span className='absolute bottom-0 right-2.5 text-gray'>{message.time}</span>
+													</IconContext.Provider></div>
+												}
+											</div>
+										}
 									})
 								}
 
 							</div>
-							<div className='relative h-1/6 py-5'>
-								<IconContext.Provider value={{ size: '4vh' }}>
+							<div className='relative h-20 py-5'>
+								<IconContext.Provider value={{ size: '2em' }}>
 									<button className='px-2.5 py-2.5 text-dark-green absolute right-0 top-3.5 z-10' onClick={() => {
 										// userStore.setIsProfile(true)
-										sendMessage().then(r=>console.log(r))
+										sendMessage().then(r => console.log(r))
 										setCurrMessage('')
 									}}><IoSendSharp />
 									</button>
@@ -339,17 +413,18 @@ const Dialogs = observer(() => {
 							</div>
 						</div>
 						{/*end message*/}
-						<div className='min-w-fit border-l-2 border-gray px-5'>
+						<div className={clsx('min-w-fit mx-auto md:block md:border-l-2 border-gray px-5', tab !== 'info' && 'hidden')}>
 							<div className='flex flex-col text-white'>
-								<div className='font-semibold text-xl pt-4'>{selectedChat.name}</div>
-								<div className='font-semibold pt-4'>Владелец: {selectedChat.owner === userStore.user.id ? 'Вы' :
+								<div className='font-semibold text-3xl md:text-xl pt-4'>{selectedChat.name}</div>
+								<div className='font-semibold md:text-base text-2xl pt-4'>Владелец: {selectedChat.owner === userStore.user.id ? 'Вы' :
 									usersById[selectedChat.owner]['name']}</div>
 								{
-									selectedChat.participants?.length !== 0 && <div className='font-semibold pt-2'>Участники:</div>}
+									selectedChat.participants?.length !== 0 && <div className='font-semibold md:text-base text-2xl pt-2'>Участники:</div>}
 								{
 									selectedChat.participants?.map((participant) => {
-										return <span onClick={() => {
-											userStore.setIsReading(usersById[participant])}} className='cursor-pointer pl-8 pt-2'>
+										return <span key={participant} onClick={() => {
+											userStore.setIsReading(usersById[participant])
+										}} className='cursor-pointer md:text-base text-2xl pl-8 pt-2'>
 											{usersById[participant]['name']}</span>
 									})
 								}

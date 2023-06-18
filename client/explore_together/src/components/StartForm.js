@@ -7,7 +7,8 @@ import { useValidation } from '../utils/useValidation'
 import { clsx } from 'clsx'
 import ErrModal from './ErrModal'
 import { readGeo, readIp } from '../api/api.geo'
-
+import Toast from './Toast'
+import { Toaster } from "react-hot-toast";
 
 const StartForm = observer(() => {
 
@@ -24,8 +25,8 @@ const StartForm = observer(() => {
 	const [bluredPassword, setBluredPassword] = useState(false)
 	const [emailErr, validateEmail] = useValidation(email, { isEmpty: true, isCorrect: true })
 	const [bluredEmail, setBluredEmail] = useState(false)
-	const [snErr, validateSn] = useValidation(socialNetwork, { isEmpty: true })
-	const [bluredSn, setBluredSn] = useState(false)
+	// const [snErr, validateSn] = useValidation(socialNetwork, { isEmpty: true })
+	// const [bluredSn, setBluredSn] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -36,17 +37,18 @@ const StartForm = observer(() => {
 				console.log(res)
 				userStore.setUser(res)
 				userStore.setIsAuth(true)
-				readIp().then(r => {
-					if (r) {
-						readGeo(r).then(loc => {
+				readIp().then(({ ip }) => {
+					if (ip) {
+						readGeo(ip).then(loc => {
+							console.log(loc)
 						})
 					}
 				})
 			} else {
-				alert(res.response.data.message)
+				Toast('err','Ошибка!', res.response.data.message)
 			}
 		} else {
-			const res = await registration(name, email, password, gender, socialNetwork)
+			const res = await registration(name, email, password, gender)
 			if (!res.response || res.response.status === 200) {
 				readIp().then(r => {
 					if (r) {
@@ -64,57 +66,58 @@ const StartForm = observer(() => {
 	}
 
 	return (<>
+			<Toaster/>
 			<div className="flex pt-14 flex-col h-screen bg-[url('../../public/img/background.jpg')] bg-cover bg-center">
-				<div className='grid place-items-center mx-2 my-20 sm:my-auto'>
+				<div className='grid place-items-center mx-2 my-auto'>
 
 					<div className='ring-light-green ring-8 ring-opacity-50 w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 2xl:w-3/12
             px-6 py-10 sm:px-10 sm:py-6
             bg-opacity-90 bg-black rounded-lg shadow-md lg:shadow-lg shadow-light-green shadow-2xl'>
-						<h2 className='block text-center font-bold text-3xl lg:text-4xl text-white'>
+						<h2 className='block text-center font-bold text-2xl lg:text-2xl text-white'>
 							{userStore._isLogin ? 'Вход' : 'Регистрация'}
 						</h2>
 
-						<form className='mt-5' method='POST'>
-							<div className='grid grid-cols-1 gap-5'>
+						<form className='mt-3' method='POST'>
+							<div className='grid grid-cols-1 gap-4'>
 								{
 									!userStore._isLogin && <div>
-										<label htmlFor='name' className='block text-xl text-white '>Имя:</label>
+										<label htmlFor='name' className='block text-white '>Имя:</label>
 										<input id='name' type='name' name='name' placeholder='Введите имя' autoComplete='name'
 													 value={name} onChange={e => setName(e.target.value)}
 													 onBlur={e => {
 														 setBluredName(true)
 														 validateName()
 													 }}
-													 className={clsx('block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ' +
+													 className={clsx('block w-full px-2 py-1.5 mt-1.5 text-gray bg-white border ' +
 														 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 														 'focus:ring-light-green focus:outline-none', nameErr && bluredName && 'ring-2 ring-red focus:ring-red')}
 													 required />
 										{
-											nameErr && bluredName && <p className='absolute text-red'>{nameErr}</p>
+											nameErr && bluredName && <p className='absolute text-red text-sm'>{nameErr}</p>
 										}
 									</div>
 								}
 
 								<div>
-									<label htmlFor='email' className='block text-xl text-white'>Эл. почта:</label>
+									<label htmlFor='email' className='block text-white'>Эл. почта:</label>
 									<input id='email' type='email' name='email' placeholder='Введите эл. почту' autoComplete='email'
 												 value={email} onChange={e => setEmail(e.target.value)}
 												 onBlur={e => {
 													 setBluredEmail(true)
 													 validateEmail()
 												 }}
-												 className={clsx('block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ' +
+												 className={clsx('block w-full px-2 py-1.5 mt-1.5 text-gray-700 bg-white border ' +
 													 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													 'focus:ring-light-green focus:outline-none', emailErr && bluredEmail && 'ring-2 ring-red focus:ring-red')}
 												 required />
 									{
-										emailErr && bluredEmail && <p>{emailErr}</p>
+										emailErr && bluredEmail && <p className='absolute text-red text-sm'>{emailErr}</p>
 									}
 								</div>
 
 								<div>
 									<label htmlFor='password'
-												 className='block text-xl text-white'>Пароль:</label>
+												 className='block text-white'>Пароль:</label>
 									<input id='password' type='password' name='password' placeholder='Введите пароль'
 												 autoComplete='current-password'
 												 value={password} onChange={e => setPassword(e.target.value)}
@@ -122,21 +125,21 @@ const StartForm = observer(() => {
 													 setBluredPassword(true)
 													 validatePassword()
 												 }}
-												 className={clsx('block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ' +
+												 className={clsx('block w-full px-2 py-1.5 mt-1.5 text-gray-700 bg-white border ' +
 													 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 													 'focus:ring-light-green focus:outline-none', passwordErr && bluredPassword && 'ring-2 ring-red focus:ring-red')}
 												 required />
 									{
-										passwordErr && bluredPassword && <p>{passwordErr}</p>
+										passwordErr && bluredPassword && <p className='absolute text-red text-sm'>{passwordErr}</p>
 									}</div>
 								{
 									!userStore._isLogin && <>
 										<div>
 											<label htmlFor='password'
-														 className='block text-xl text-white'>Пол:</label>
+														 className='block text-white'>Пол:</label>
 
 											<select value={gender} onChange={e => setGender(e.target.value)}
-															className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border
+															className='block w-full px-2 py-1.5 mt-1.5 text-gray-700 bg-white border
 												border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 focus:ring-light-green
 												focus:outline-none'>
 												<option value={'Жен'}>Женский</option>
@@ -174,24 +177,6 @@ const StartForm = observer(() => {
 										{/*		Муж*/}
 										{/*	</label>*/}
 										{/*</div>*/}
-
-										<div>
-											<label htmlFor='password'
-														 className='block text-xl text-white'>Социальная сеть: </label>
-											<input id='socialNetwork' type='socialNetwork' name='socialNetwork'
-														 placeholder='Введите ссылку или ник соцсети' autoComplete='socialNetwork'
-														 value={socialNetwork} onChange={e => setSocialNetwork(e.target.value)}
-														 onBlur={e => {
-															 setBluredSn(true)
-															 validateSn()
-														 }}
-														 className={clsx('block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ' +
-															 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
-															 'focus:ring-light-green focus:outline-none', snErr && bluredSn && 'ring-2 ring-red focus:ring-red')}
-														 required />
-											{
-												snErr && bluredSn && <p>{snErr}</p>
-											}</div>
 									</>
 								}
 
@@ -213,11 +198,11 @@ const StartForm = observer(() => {
 								</div>
 
 								<button type='button'
-												disabled={!userStore._isLogin ? emailErr || passwordErr || nameErr || snErr : emailErr || passwordErr}
+												disabled={!userStore._isLogin ? emailErr || passwordErr || nameErr : emailErr || passwordErr}
 												onClick={auth}
 												className='w-full py-3 bg-dark-green bg-transparent-none rounded-md
-                    font-medium text-white uppercase
-                    focus:outline-none hover:bg-gray-700 hover:shadow-none  disabled:cursor-not-allowed'>
+                    font-medium text-white text-sm uppercase text-center
+                    focus:outline-none hover:bg-light-green hover:shadow-none  disabled:cursor-not-allowed'>
 									{userStore._isLogin ? 'Войти' : 'Зарегистрироваться'}
 								</button>
 

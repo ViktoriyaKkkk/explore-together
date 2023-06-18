@@ -50,27 +50,27 @@ const Periodicity = observer(() => {
 				<CreateModal document={'Periodicities'} load={load} createFunc={createPeriodicities} />
 			}
 			<Sidebar />
-			<div className='pt-20'>
+			<div className='pt-14'>
 				<button onClick={() => {
 					AdminInstance.setIsModal(false)
 					AdminInstance.setIsCreating(true)
 				}}
-								className='my-5 ml-52 p-4 disabled:cursor-not-allowed text-xl leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
+								className='my-3 ml-48 p-4 disabled:cursor-not-allowed leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
 							hover:bg-light-green focus:outline-none'
 								data-modal-target='staticModal' data-modal-toggle='staticModal'>Добавить запись
 				</button>
-				<div className='relative mt-5 mr-5 ml-52 overflow-x-auto shadow-md sm:rounded-lg'>
+				<div className='relative mt-3 mr-5 ml-48 overflow-x-auto shadow-md sm:rounded-lg'>
 
 					<table className='w-full text-sm text-left text-white'>
 						<thead className='text-xs text-white uppercase bg-black bg-opacity-90'>
 						<tr>
-							<th scope='col' className='px-6 py-3'>
+							<th scope='col' className='px-6 py-2'>
 								Periodicities id
 							</th>
-							<th scope='col' className='px-6 py-3'>
+							<th scope='col' className='px-3 py-1.5'>
 								Periodicities name
 							</th>
-							<th scope='col' className='px-6 py-3'>
+							<th scope='col' className='px-3 py-1.5'>
 								Action
 							</th>
 						</tr>
@@ -82,11 +82,11 @@ const Periodicity = observer(() => {
 									<th scope='row' className='px-6 py-2 font-medium text-white whitespace-nowrap'>
 										{item._id}
 									</th>
-									<td className='px-6 py-2'>
+									<td className='px-3 py-1.5'>
 										{item.name}
 									</td>
-									<td className='px-6 py-2 text-light-gray'>
-										<IconContext.Provider value={{ size: '2em' }}>
+									<td className='pr-3 py-1.5 text-light-gray'>
+										<IconContext.Provider value={{ size: '1.5em' }}>
 											<button className='px-2.5 py-2.5 hover:bg-gray hover:text-white rounded-md' onClick={() => {
 												AdminInstance.setIsModal(false)
 												AdminInstance.setIsEditing(item._id)

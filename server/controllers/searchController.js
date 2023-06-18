@@ -69,7 +69,7 @@ class SearchController {
 							to: existingOwner.email,
 							subject: 'У вас новый партнёр!',
 							text: `Поздравляем! К вашему поисковому запросу "${existingSearch.name}" присоединился новый участник!
-							Заходите на сайт и узнайте подробность по ссылке.`,
+							Переходите по ссылке и познакомьтесь с ним: http://localhost:3000/dialogs/${existingSearch._id}`,
 						}
 						mailer(message)
 						const updatedSearch = await Search.findByIdAndUpdate(existingSearch._id, {
@@ -77,7 +77,6 @@ class SearchController {
 							participants: [...existingSearch.participants, id],
 						}, { new: true })
 					}
-					//здесь уведомление
 					res.json(`Вы добавлены как участник поискового запроса с такими параметрами - "${existingSearch.name}"`)
 				}
 

@@ -2,13 +2,17 @@ import Layout from '../components/Layout'
 import { useAppContext } from '../context/AppContext'
 import Profile from '../components/Profile'
 import { observer } from 'mobx-react-lite'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+import * as mobx from 'mobx'
+import { useEffect } from 'react'
 
 const About = observer(() => {
 	const { userStore } = useAppContext()
 	console.log('user ', userStore.user)
 	return (
 		<Layout>
+			<Toaster/>
 			{
 				userStore.isProfile && <Profile />
 			}
@@ -21,16 +25,16 @@ const About = observer(() => {
 				<div className='fixed bottom-0 w-full -z-40 h-full bg-black xl:hidden'>
 				</div>
 				<div
-					className="xl:hidden fixed -bottom-56 w-full -z-30 h-full [mask-image:linear-gradient(0deg,transparent,black)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
+					className="xl:hidden fixed w-full -z-30 h-full [mask-image:linear-gradient(0deg,transparent,black)] bg-repeat bg-[url('../../public/img/bggrid2.svg')] ">
 				</div>
 				<div
 					className='flex pt-12 h-full flex-col items-center'>
 					<section className="bg-transparent">
-						<div className="py-5 px-4 mx-auto max-w-screen-xl text-center lg:pt-14 2xl:pb-28 lg:pb-16">
+						<div className="py-5 px-8 mx-auto max-w-screen-xl text-center lg:pt-14 2xl:pb-28 lg:pb-16">
 							<h1
-								className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-3xl lg:text-4xl text-white">
+								className="mb-4 text-3xl font-extrabold tracking-tight leading-none lg:text-4xl text-white">
 								You could reach more further - Explore Together!</h1>
-							<p className="mb-5 text-lg font-normal text-dark-white sm:px-12">Добро пожаловать на мой сайт для
+							<p className="mb-5 text-base lg:text-lg font-normal text-dark-white sm:px-12">Добро пожаловать на мой сайт для
 								поиска партнеров по обучению! Независимо от того, в какой области знаний вы заинтересованы, на моём сайте вы сможете найти подходящего
 								человека, с которым можно совместно изучать материалы, делиться опытом и знаниями. Я стремлюсь внести вклад в создание сообщества, где люди могут
 								находить новое и обмениваться знаниями, а также вдохновлять друг друга на достижение новых высот. Я постоянно работаю над
@@ -71,7 +75,7 @@ const About = observer(() => {
 								</svg>
 							</div>
 							<div className="flex flex-col ml-5 justify-between leading-normal">
-								<h5 className='mb-2 text-xl font-bold tracking-tight text-white'>Создайте запрос на поиск</h5>
+								<h5 className='mb-2 lg:text-xl text-lg font-bold tracking-tight text-white'>Создайте запрос на поиск</h5>
 								<p className='mb-3 font-normal text-light-gray'>Перейдите на Главную и заполните форму,
 									указав тему, раздел и уровень изучаемого, а так же другие необходимые поля.</p>
 							</div>
@@ -96,7 +100,7 @@ const About = observer(() => {
 								</svg>
 							</div>
 							<div className="flex flex-col ml-5 justify-between leading-normal">
-								<h5 className='mb-2 text-xl font-bold tracking-tight text-white'>Начните поиск</h5>
+								<h5 className='mb-2 lg:text-xl text-lg font-bold tracking-tight text-white'>Начните поиск</h5>
 								<p className='mb-3 font-normal text-light-gray'>После заполнения всех необходимых
 									полей нажмите на кнопку "Начать поиск" и ожидайте результатов выполнения алгоритма.</p>
 							</div>
@@ -120,7 +124,7 @@ const About = observer(() => {
 								</svg>
 							</div>
 							<div className="flex flex-col ml-5 justify-between leading-normal">
-								<h5 className='mb-2 text-xl font-bold tracking-tight text-white'>Познакомьтесь с партнёрами</h5>
+								<h5 className='mb-2 lg:text-xl text-lg font-bold tracking-tight text-white'>Познакомьтесь с партнёрами</h5>
 								<p className='mb-3 font-normal text-light-gray'>Перейдите на страницу "Мой поиск" и найдите новый появившийся запрос на поиск.
 									В пункте "Участники" вы увидите подобранных вам партнеров.</p>
 							</div>
