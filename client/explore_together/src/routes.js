@@ -13,12 +13,10 @@ import Section from './pages/Section'
 import Level from './pages/Level'
 import User from './pages/User'
 import Search from './pages/Search'
-import Participant from './pages/Participant'
 import Report from './pages/Report'
 import Dialogs from './pages/Dialogs'
 import Questions from './pages/Questions'
 import QuestionAdmin from './pages/QuestionAdmin'
-
 
 export const routes = [
 	{

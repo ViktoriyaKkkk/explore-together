@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite'
 import { useValidation } from '../utils/useValidation'
 import { clsx } from 'clsx'
 import Toast from './Toast'
-import { Toaster } from 'react-hot-toast'
 
 const Profile = observer(() => {
 
@@ -35,8 +34,6 @@ const Profile = observer(() => {
 
 	const [gender,setGender] = useState('')
 	const [socialNetwork,setSocialNetwork] = useState('')
-	// const [snErr, validateSn] = useValidation(socialNetwork, {isEmpty: true})
-	// const [bluredSn, setBluredSn] = useState(false)
 
 	const [info,setInfo] = useState('')
 

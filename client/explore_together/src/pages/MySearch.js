@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import { observer } from 'mobx-react-lite'
 import Layout from '../components/Layout'
@@ -14,24 +14,19 @@ import { useCities } from '../utils/useCities'
 import { useAges } from '../utils/useAges'
 import { useSections } from '../utils/useSections'
 import { useTopics } from '../utils/useTopics'
-import updateSearch from '../components/UpdateSearch'
 import { updateSearches } from '../api/api.search'
 import ModalLayout from '../components/ModalLayout'
 import ReadModal from '../components/ReadModal'
-import { readOneUser } from '../api/api.user'
 import { IconContext } from 'react-icons'
 import { IoClose } from 'react-icons/io5'
 import { createReports } from '../api/api.report'
 import Profile from '../components/Profile'
 import { useValidation } from '../utils/useValidation'
-import io from 'socket.io-client'
-import * as mobx from 'mobx'
 import Toast from '../components/Toast'
 import { Toaster } from 'react-hot-toast'
 
 
 const MySearch = observer(() => {
-	// const socket = io.connect('http://localhost:5000')
 
 	const navigate = useNavigate()
 	const { userStore, AdminInstance } = useAppContext()
@@ -86,35 +81,35 @@ const MySearch = observer(() => {
 		}, {})
 	}, [durations])
 
-	const [periodicities, errorPeriodicity] = usePeriodicities()
+	const [periodicities] = usePeriodicities()
 	const periodicitiesById = useMemo(() => {
 		return periodicities?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr['name'] }
 		}, {})
 	}, [periodicities])
 
-	const [times, errorTime] = useTimes()
+	const [times] = useTimes()
 	const timesById = useMemo(() => {
 		return times?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr['name'] }
 		}, {})
 	}, [times])
 
-	const [formats, errorFormat] = useFormats()
+	const [formats] = useFormats()
 	const formatsById = useMemo(() => {
 		return formats?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr['name'] }
 		}, {})
 	}, [formats])
 
-	const [cities, errorCity] = useCities()
+	const [cities] = useCities()
 	const citiesById = useMemo(() => {
 		return cities?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr['name'] }
 		}, {})
 	}, [cities])
 
-	const [ages, errorAge] = useAges()
+	const [ages] = useAges()
 	const agesById = useMemo(() => {
 		return ages?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr['name'] }
@@ -132,10 +127,8 @@ const MySearch = observer(() => {
 	const [reportErr, validateReport] = useValidation(reportText, { isEmpty: true })
 	const [bluredReport, setBluredReport] = useState(false)
 
-	// console.log(searches)
 	if (searches.length === 0 || Object.keys(levelsById).length === 0 || Object.keys(sectionsById).length === 0
 		|| Object.keys(topicsById).length === 0 || Object.keys(usersById).length === 0) {
-		// console.log('done')
 		return <Layout>
 			<div className='absolute w-full -z-20 h-full bg-black'>
 			</div>
@@ -167,7 +160,6 @@ const MySearch = observer(() => {
 				<ReadModal btn={'Пожаловаться на пользователя'} dis={false} func={() => {
 					console.log(`Вы пожаловались на ${userStore.isReading.name}`)
 					AdminInstance.setIsModal(!AdminInstance.isModal)
-					// userStore.setIsReading('')
 				}}>
 					<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
 						<h3 className='mr-7 font-semibold text-white place-self-center'>

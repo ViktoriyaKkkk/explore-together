@@ -12,19 +12,14 @@ import { useCities } from '../utils/useCities'
 import { useAges } from '../utils/useAges'
 import { createSearch } from '../api/api.search'
 import { useValidation } from '../utils/useValidation'
-import { readCities } from '../api/api.city'
 import { clsx } from 'clsx'
-import { useSearch } from '../utils/useSearch'
-import * as mobx from 'mobx'
-import { Link, useLocation } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import Toast from './Toast'
 import { Toaster } from 'react-hot-toast'
 import Layout from './Layout'
 
 
 const Main = observer(() => {
-
-	const { userStore } = useAppContext()
 
 	const [searchName, setSearchName] = useState('')
 	const [nameErr, validateName] = useValidation(searchName, { isEmpty: true })
@@ -38,7 +33,7 @@ const Main = observer(() => {
 	const [topicErr, validateTopic] = useValidation(selectedTopic, { isZero: true })
 	const [bluredTopic, setBluredTopic] = useState(false)
 
-	const [sections, errorSection] = useSections()
+	const [sections] = useSections()
 	sections.sort((a, b) => {
 		return a.name.localeCompare(b.name) // по алфавиту (по возрастанию)
 	})
@@ -54,7 +49,7 @@ const Main = observer(() => {
 	const [sectionErr, validateSection] = useValidation(selectedSection, { isZero: true })
 	const [bluredSection, setBluredSection] = useState(false)
 
-	const [levels, errorLevel] = useLevels()
+	const [levels] = useLevels()
 	const bundlOfLevels = useMemo(() => {
 		if (selectedSection !== 0) {
 			return levels.filter((level) => {
@@ -68,26 +63,26 @@ const Main = observer(() => {
 	const [bluredLevel, setBluredLevel] = useState(false)
 
 	const [selectedDuration, setSelectedDuration] = useState(0)
-	const [durations, errorDuration] = useDurations()
+	const [durations] = useDurations()
 	const [durationErr, validateDuration] = useValidation(selectedDuration, { isZero: true })
 	const [bluredDuration, setBluredDuration] = useState(false)
 
-	const [periodicities, errorPeriodicity] = usePeriodicities()
+	const [periodicities] = usePeriodicities()
 	const [selectedPeriodicity, setSelectedPeriodicity] = useState(0)
 	const [periodicityErr, validatePeriodicity] = useValidation(selectedPeriodicity, { isZero: true })
 	const [bluredPeriodicity, setBluredPeriodicity] = useState(false)
 
-	const [times, errorTime] = useTimes()
+	const [times] = useTimes()
 	const [selectedTime, setSelectedTime] = useState(0)
 	const [timeErr, validateTime] = useValidation(selectedTime, { isZero: true })
 	const [bluredTime, setBluredTime] = useState(false)
 
-	const [formats, errorFormat] = useFormats()
+	const [formats] = useFormats()
 	const [selectedFormat, setSelectedFormat] = useState(0)
 	const [formatErr, validateFormat] = useValidation(selectedFormat, { isZero: true })
 	const [bluredFormat, setBluredFormat] = useState(false)
 
-	const [cities, errorCity] = useCities()
+	const [cities] = useCities()
 	const citiesByName = useMemo(() => {
 		return cities?.reduce((prev, curr) => {
 			return { ...prev, [curr.name]: curr._id }
@@ -108,67 +103,28 @@ const Main = observer(() => {
 
 	const [selectedParticipantsGender, setSelectedParticipantsGender] = useState('')
 
-	const [ages, errorAge] = useAges()
+	const [ages] = useAges()
 	const [selectedAges, setSelectedAges] = useState(0)
 	const [ageErr, validateAge] = useValidation(selectedAges, { isZero: true })
 	const [bluredAge, setBluredAge] = useState(false)
 
 	const startSearch = () => {
 		let params = [searchName, selectedLevel, selectedDuration, selectedPeriodicity, selectedTime, selectedFormat, selectedAges, selectedCity, selectedNumberOfPeople]
-		// if (selectedCity!==0) {
-		// 	params = [...params, selectedCity]
-		// }
-		// if (selectedNumberOfPeople!=='') {
-		// 	params = [...params, selectedNumberOfPeople]
-		// }
 		if (selectedParticipantsGender === '') {
 			params = [...params, 'Любой']
 		} else {
 			params = [...params, selectedParticipantsGender]
 		}
-		// console.log(...params)
 		createSearch(...params).then((data) => Toast('ok', 'Внимание!', data))
-		// console.log(params)
 	}
 
 	useMemo(() => {
 		if (Object.keys(citiesByName) !== 0 && localStorage.getItem('city') && selectedFormat === '641e114f2945eabd89d70189') {
 			setSelectedCity(citiesByName[localStorage.getItem('city')])
-			// console.log(citiesByName[localStorage.getItem('city')])
-			// console.log(selectedCity)
 		} else {
 			// console.log('name',citiesByName)
 		}
 	}, [citiesByName, selectedFormat])
-
-	// const [searches, err, load] = useSearch()
-	// const chats = useMemo(() => searches?.filter(search => {
-	// 	let res = false
-	// 	search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
-	// 		if (item === userStore._user.id) {
-	// 			res = true
-	// 		}
-	// 	})
-	// 	return res
-	// }), [searches, userStore])
-
-	// useMemo(()=>chats?.forEach((item)=>{
-	// 	userStore.socket.emit('join_room', item._id)
-	// 	console.log('joined ', item._id)
-	// }),[chats,userStore.socket])
-	//
-	// const location = useLocation()
-	// useEffect(() => {
-	// 	userStore.socket.on('receive_message', (data) => {
-	// 		userStore.setChat([...userStore.chat, data])
-	//
-	// 		if (data.searchId !== location.pathname.split('/')[2]) {
-	// 			userStore.setNotifications([...userStore.notifications, data])
-	// 			console.log('zzzzzzzzzz', mobx.toJS(userStore.notifications))
-	// 		}
-	// 	})
-	// 	console.log(userStore.socket)
-	// }, [])
 
 	return (<Layout>
 			<Toaster />

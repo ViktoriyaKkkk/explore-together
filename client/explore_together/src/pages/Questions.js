@@ -6,7 +6,6 @@ import { clsx } from 'clsx'
 import { useAppContext } from '../context/AppContext'
 import { Link } from 'react-router-dom'
 import { createQuestions } from '../api/api.question'
-import { useUsers } from '../utils/useUsers'
 import { Toaster } from 'react-hot-toast'
 import Toast from '../components/Toast'
 

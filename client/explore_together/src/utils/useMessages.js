@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import { readMessages } from '../api/api.message'
 import { useAppContext } from '../context/AppContext'
 

@@ -21,7 +21,6 @@ const ReadModal = observer(({btn, func, dis, children }) => {
 					<div className='flex items-center justify-center p-6 space-x-2 border-t border-gray rounded-b'>
 						<button disabled={dis} data-modal-hide='staticModal' type='button' onClick={()=> {
 							func()
-							// console.log(load())
 						}}
 										className='px-6 disabled:cursor-not-allowed py-2 leading-5 text-white transition-colors duration-200 transform bg-dark-green rounded-md
 							hover:bg-light-green focus:outline-none'>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import ModalLayout from './ModalLayout'
 import { useAppContext } from '../context/AppContext'
-import { updateAges } from '../api/api.age'
 import { observer } from 'mobx-react-lite'
 import { IoClose } from 'react-icons/io5'
 import { IconContext } from "react-icons";

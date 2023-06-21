@@ -4,8 +4,6 @@ import Profile from '../components/Profile'
 import { observer } from 'mobx-react-lite'
 import { Link, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import * as mobx from 'mobx'
-import { useEffect } from 'react'
 
 const About = observer(() => {
 	const { userStore } = useAppContext()

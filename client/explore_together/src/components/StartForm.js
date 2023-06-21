@@ -8,8 +8,6 @@ import { clsx } from 'clsx'
 import { readGeo, readIp } from '../api/api.geo'
 import Toast from './Toast'
 import { Toaster } from 'react-hot-toast'
-import * as mobx from 'mobx'
-import { useSearch } from '../utils/useSearch'
 import Layout from './Layout'
 
 const StartForm = observer(() => {
@@ -27,13 +25,6 @@ const StartForm = observer(() => {
 	const [bluredPassword, setBluredPassword] = useState(false)
 	const [emailErr, validateEmail] = useValidation(email, { isEmpty: true, isCorrect: true })
 	const [bluredEmail, setBluredEmail] = useState(false)
-	// const [snErr, validateSn] = useValidation(socialNetwork, { isEmpty: true })
-	// const [bluredSn, setBluredSn] = useState(false)
-
-	// const navigate = useNavigate()
-	//
-	// const [searches, err, load] = useSearch()
-	// const location = useLocation()
 
 	const auth = async () => {
 		if (userStore._isLogin) {
@@ -69,29 +60,6 @@ const StartForm = observer(() => {
 
 		}
 	}
-
-	// const startSocket = useMemo(() => {
-	// 	const chats = searches?.filter(search => {
-	// 		let res = false
-	// 		search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
-	// 			if (item === userStore._user.id) {
-	// 				res = true
-	// 			}
-	// 		})
-	// 		return res
-	// 	})
-	// 	chats?.forEach((item) => {
-	// 		userStore.socket.emit('join_room', item._id)
-	// 		console.log('joined ', item._id)
-	// 	})
-	// 	userStore.socket.on('receive_message', (data) => {
-	// 		userStore.setChat([...userStore.chat, data])
-	// 		if (data.searchId !== location.pathname.split('/')[2]) {
-	// 			userStore.setNotifications([...userStore.notifications, data])
-	// 			console.log('zzzzzzzzzz', mobx.toJS(userStore.notifications))
-	// 		}
-	// 	})
-	// }, [userStore.socket, searches, location])
 
 	return (<Layout>
 			<Toaster />
@@ -174,37 +142,6 @@ const StartForm = observer(() => {
 												<option value={'Муж'}>Мужской</option>
 											</select>
 										</div>
-										{/*<div className='flex items-center mb-4'>*/}
-
-										{/*	<input*/}
-										{/*		className='w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'*/}
-										{/*		type='radio'*/}
-										{/*		name='gender'*/}
-										{/*		value='Жен'*/}
-										{/*		id='female'*/}
-										{/*		onChange={e => setGender(e.target.value)}*/}
-										{/*		checked={gender === 'Жен' ? true : false} />*/}
-										{/*	<label*/}
-										{/*		className='mt-px text-black inline-block pl-[0.15rem] hover:cursor-pointer'*/}
-										{/*		htmlFor='female'>*/}
-										{/*		Жен*/}
-										{/*	</label>*/}
-										{/*</div>*/}
-										{/*<div className='flex items-center mb-4'>*/}
-										{/*	<input*/}
-										{/*		className='w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'*/}
-										{/*		type='radio'*/}
-										{/*		name='gender'*/}
-										{/*		value='Муж'*/}
-										{/*		id='male'*/}
-										{/*		onChange={e => setGender(e.target.value)}*/}
-										{/*		checked={gender === 'Муж' ? true : false} />*/}
-										{/*	<label*/}
-										{/*		className='mt-px inline-block text-black pl-[0.15rem] hover:cursor-pointer'*/}
-										{/*		htmlFor='male'>*/}
-										{/*		Муж*/}
-										{/*	</label>*/}
-										{/*</div>*/}
 									</>
 								}
 
@@ -235,7 +172,6 @@ const StartForm = observer(() => {
                     focus:outline-none hover:bg-light-green hover:shadow-none  disabled:cursor-not-allowed'>
 									{userStore._isLogin ? 'Войти' : 'Зарегистрироваться'}
 								</button>
-
 
 							</div>
 						</form>

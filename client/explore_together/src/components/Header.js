@@ -4,9 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { CgProfile } from 'react-icons/cg'
 import { IconContext } from 'react-icons'
 import { clsx } from 'clsx'
-import { BiEdit } from 'react-icons/bi'
-import { RiDeleteBin5Line } from 'react-icons/ri'
-import ReadModal from './ReadModal'
 import { useSearch } from '../utils/useSearch'
 import { useMemo, useState } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
@@ -17,7 +14,7 @@ const Header = observer(() => {
 	const { userStore } = useAppContext()
 	const location = useLocation()
 
-	const [searches, err] = useSearch()
+	const [searches] = useSearch()
 	if (!searches.response) {
 		searches.reverse()
 	}

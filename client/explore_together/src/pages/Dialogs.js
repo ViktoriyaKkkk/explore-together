@@ -33,7 +33,7 @@ const Dialogs = observer(() => {
 	})
 	let { id } = useParams()
 
-	const [searches, err, load] = useSearch()
+	const [searches] = useSearch()
 	searches.reverse()
 	const chats = useMemo(() => searches?.filter(search => {
 		let res = false
@@ -54,21 +54,7 @@ const Dialogs = observer(() => {
 	const navigate = useNavigate()
 	if (id != null && id !== 'undefined') {
 		useMessages(id)
-		// userStore.socket.emit('join_room', id)
 	}
-
-	// chats?.forEach((item)=>{
-	// 	userStore.socket.emit('join_room', item._id)
-	// })
-
-	// useEffect(async ()=> {
-	// 	const messages = await readMessages(id)
-	// 	if (messages) {
-	// 		userStore.setChat(messages)
-	// 		console.log(messages)
-	// 	}
-	// },[])
-
 
 	const [currMessage, setCurrMessage] = useState('')
 
@@ -106,18 +92,6 @@ const Dialogs = observer(() => {
 	useEffect(() => {
 		scrollToBottom()
 	})
-
-	// const [searches, err, load] = useSearch()
-	//
-	// const chats = useMemo(() => searches?.filter(search => {
-	// 	let res = false
-	// 	search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
-	// 		if (item === userStore._user.id) {
-	// 			res = true
-	// 		}
-	// 	})
-	// 	return res
-	// }), [searches, userStore])
 
 	const [selectedChat, setSelectedChat] = useState({})
 	useEffect(() => {
@@ -178,7 +152,6 @@ const Dialogs = observer(() => {
 				<ReadModal btn={'Пожаловаться на пользователя'} dis={false} func={() => {
 					console.log(`Вы пожаловались на ${userStore.isReading.name}`)
 					AdminInstance.setIsModal(!AdminInstance.isModal)
-					// userStore.setIsReading('')
 				}}>
 					<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
 						<h3 className='md:text-xl text-base mr-7 font-semibold text-white place-self-center'>
@@ -287,13 +260,6 @@ const Dialogs = observer(() => {
 						</div>
 						<div className={clsx('md:grid grid-cols-1 md:place-content-start place-content-center min-w-full md:min-w-fit ' +
 							'md:border-r-2 border-gray overflow-y-auto', tab !== 'dialogs' && 'hidden')}>
-							{/*<div className='border-b-2 border-gray py-4 px-2'>*/}
-							{/*	<input*/}
-							{/*		type='text'*/}
-							{/*		placeholder='search chatting'*/}
-							{/*		className='py-2 px-2 border-2 border-gray rounded-2xl w-full'*/}
-							{/*	/>*/}
-							{/*</div>*/}
 
 							{chats &&
 								chats?.map((chat) => {
@@ -322,23 +288,6 @@ const Dialogs = observer(() => {
 									</button>
 								})
 							}
-
-
-							{/*<div*/}
-							{/*	className='flex flex-row py-4 px-2 items-center border-b-2 border-l-4 border-dark-green'*/}
-							{/*>*/}
-							{/*	<div className='w-1/4'>*/}
-							{/*		<img*/}
-							{/*			src='https://source.unsplash.com/L2cxSuKWbpo/600x600'*/}
-							{/*			className='object-cover h-12 w-12 rounded-full'*/}
-							{/*			alt=''*/}
-							{/*		/>*/}
-							{/*	</div>*/}
-							{/*	<div className='w-full'>*/}
-							{/*		<div className='text-lg font-semibold'>MERN Stack</div>*/}
-							{/*		<span className='text-gray'>Lusi : Thanks Everyone</span>*/}
-							{/*	</div>*/}
-							{/*</div>*/}
 
 							{/*end user list */}
 						</div>
@@ -398,7 +347,6 @@ const Dialogs = observer(() => {
 							<div className='relative h-20 py-5'>
 								<IconContext.Provider value={{ size: '2em' }}>
 									<button className='px-2.5 py-2.5 text-dark-green absolute right-0 top-3.5 z-10' onClick={() => {
-										// userStore.setIsProfile(true)
 										sendMessage().then(r => console.log(r))
 										setCurrMessage('')
 									}}><IoSendSharp />
@@ -430,12 +378,6 @@ const Dialogs = observer(() => {
 											{usersById[participant]['name']}</span>
 									})
 								}
-								{/*<div className='font-semibold text-white py-4'>{usersById[selectedChat.topicId]}</div>*/}
-								{/*<div className='font-semibold text-white py-4'>{selectedChat.format}</div>*/}
-								{/*<div className='font-light'>*/}
-								{/*	Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,*/}
-								{/*	perspiciatis!*/}
-								{/*</div>*/}
 							</div>
 						</div>
 					</div>

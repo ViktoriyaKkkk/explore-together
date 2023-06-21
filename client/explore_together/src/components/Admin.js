@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import Sidebar from './Sidebar'
 import AdminLayout from './AdminLayout'
 import Layout from './Layout'
 
