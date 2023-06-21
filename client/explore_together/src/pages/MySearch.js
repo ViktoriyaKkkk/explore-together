@@ -51,8 +51,6 @@ const MySearch = observer(() => {
 		return res
 	}), [searches, userStore])
 
-	console.log(participantsSearches)
-
 	const [levels] = useLevels()
 	const levelsById = useMemo(() => {
 		return levels?.reduce((prev, curr) => {
@@ -158,7 +156,6 @@ const MySearch = observer(() => {
 			}
 			{Object.keys(userStore.isReading).length !== 0 &&
 				<ReadModal btn={'Пожаловаться на пользователя'} dis={false} func={() => {
-					console.log(`Вы пожаловались на ${userStore.isReading.name}`)
 					AdminInstance.setIsModal(!AdminInstance.isModal)
 				}}>
 					<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
@@ -187,7 +184,7 @@ const MySearch = observer(() => {
 			{/*Окно жалобы*/}
 
 			<ModalLayout admin={false} func={() => {
-				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => console.log(r))
+				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => {})
 				setReportText('')
 				Toast('ok', 'Внимание!', `Вы пожаловались на пользователя ${userStore.isReading.name}`)
 			}}>
@@ -283,7 +280,6 @@ const MySearch = observer(() => {
 													return <Link to='/mysearch/' key={participant}
 																			 onClick={() => {
 																				 userStore.setIsReading(usersById[participant])
-																				 console.log(usersById[participant]['name'])
 																			 }}
 																			 className='block mb-1.5 w-fit ml-10 underline text-white'>{usersById[participant]['name']}</Link>
 												}) : <span

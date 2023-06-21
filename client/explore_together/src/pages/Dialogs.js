@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import * as  mobx from 'mobx'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { IoLogoOctocat } from 'react-icons/io'
@@ -10,7 +9,7 @@ import { IoClose, IoSendSharp } from 'react-icons/io5'
 import { useAppContext } from '../context/AppContext'
 import { clsx } from 'clsx'
 import { useMessages } from '../utils/useMessages'
-import { createMessages, readMessages } from '../api/api.message'
+import { createMessages } from '../api/api.message'
 import { HiUserGroup } from 'react-icons/hi'
 import { useSearch } from '../utils/useSearch'
 import { useUsers } from '../utils/useUsers'
@@ -102,7 +101,7 @@ const Dialogs = observer(() => {
 		}
 	}, [chats, id])
 
-	const [users, error] = useUsers()
+	const [users] = useUsers()
 	const usersById = useMemo(() => {
 		return users?.reduce((prev, curr) => {
 			return { ...prev, [curr._id]: curr }
@@ -150,7 +149,6 @@ const Dialogs = observer(() => {
 			}
 			{Object.keys(userStore.isReading).length !== 0 &&
 				<ReadModal btn={'Пожаловаться на пользователя'} dis={false} func={() => {
-					console.log(`Вы пожаловались на ${userStore.isReading.name}`)
 					AdminInstance.setIsModal(!AdminInstance.isModal)
 				}}>
 					<div className='relative flex items-start text-center justify-center p-4 border-b rounded-t border-gray'>
@@ -180,7 +178,8 @@ const Dialogs = observer(() => {
 			{/*Окно жалобы*/}
 
 			<ModalLayout admin={false} func={() => {
-				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => console.log(r))
+				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => {
+				})
 				alert(`Вы пожаловались на пользователя ${userStore.isReading.name}`)
 			}}>
 				<div className='relative flex items-start justify-center p-4 border-b border-gray rounded-t'>

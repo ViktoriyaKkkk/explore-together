@@ -2,12 +2,11 @@ import Layout from '../components/Layout'
 import { useAppContext } from '../context/AppContext'
 import Profile from '../components/Profile'
 import { observer } from 'mobx-react-lite'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 const About = observer(() => {
 	const { userStore } = useAppContext()
-	console.log('user ', userStore.user)
 	return (
 		<Layout>
 			<Toaster/>

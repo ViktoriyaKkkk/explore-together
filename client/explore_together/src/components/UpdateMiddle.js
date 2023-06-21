@@ -14,7 +14,6 @@ const UpdateMiddle = observer(({document, records, load, updateFunc, dependName,
 	return (
 		<ModalLayout admin={true} func={()=> {
 			updateFunc(AdminInstance._isEditing, name, dependence).then(r=> {
-				console.log(r)
 				load()
 			})
 			AdminInstance.setIsEditing('')

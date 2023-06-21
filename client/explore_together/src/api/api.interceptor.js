@@ -34,11 +34,3 @@ $geoHost.interceptors.request.use(config => {
 	console.log(config)
 	return config
 })
-
-// $errHost.interceptors.response.use(config =>{
-// 		if (config) {
-// 			config.headers.Acs = `*`
-// 		}
-// 	return config
-// }
-// 	)

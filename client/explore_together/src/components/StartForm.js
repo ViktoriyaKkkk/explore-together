@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { login, registration } from '../api/api.user'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import { observer } from 'mobx-react-lite'
 import { useValidation } from '../utils/useValidation'
@@ -18,7 +18,6 @@ const StartForm = observer(() => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [gender, setGender] = useState('Жен')
-	const [socialNetwork, setSocialNetwork] = useState('')
 	const [nameErr, validateName] = useValidation(name, { minLength: 3, isEmpty: true })
 	const [bluredName, setBluredName] = useState(false)
 	const [passwordErr, validatePassword] = useValidation(password, { minLength: 6, isEmpty: true, maxLength: 20 })
@@ -30,13 +29,11 @@ const StartForm = observer(() => {
 		if (userStore._isLogin) {
 			const res = await login(email, password)
 			if (!res.response || res.response.status === 200) {
-				console.log(res)
 				userStore.setUser(res)
 				userStore.setIsAuth(true)
 				readIp().then(({ ip }) => {
 					if (ip) {
 						readGeo(ip).then(loc => {
-							console.log(loc)
 						})
 					}
 				})

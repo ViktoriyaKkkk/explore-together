@@ -13,7 +13,6 @@ const CreateModal = observer(({document, load, createFunc }) => {
 	return (
 		<ModalLayout admin={true} func={()=> {
 			createFunc(name).then(r=> {
-				console.log(r)
 				load()
 			})
 			AdminInstance.setIsCreating(false)

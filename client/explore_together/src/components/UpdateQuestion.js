@@ -19,7 +19,6 @@ const UpdateQuestion = ({records, load, updateFunc }) => {
 				setBluredQuestion(false)
 				setAnswer('')
 				load()
-				console.log(r)
 			})
 		}}>
 			<div className='relative flex items-start justify-center p-4 border-b border-gray rounded-t'>

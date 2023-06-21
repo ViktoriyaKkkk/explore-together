@@ -12,7 +12,6 @@ const DeleteModal = observer(({document, load, deleteFunc }) => {
 	return (
 		<ModalLayout admin={true} func={()=> {
 			deleteFunc(AdminInstance._isDeleting).then(r=> {
-				console.log(r)
 				load()
 			})
 			AdminInstance.setIsDeleting('')

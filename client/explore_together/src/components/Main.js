@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useAppContext } from '../context/AppContext'
 import { useTopics } from '../utils/useTopics'
 import { useSections } from '../utils/useSections'
 import { useLevels } from '../utils/useLevels'
@@ -25,7 +24,7 @@ const Main = observer(() => {
 	const [nameErr, validateName] = useValidation(searchName, { isEmpty: true })
 	const [bluredName, setBluredName] = useState(false)
 
-	const [topics, errorTopic] = useTopics()
+	const [topics] = useTopics()
 	topics.sort((a, b) => {
 		return a.name.localeCompare(b.name) // по алфавиту (по возрастанию)
 	})
@@ -122,7 +121,6 @@ const Main = observer(() => {
 		if (Object.keys(citiesByName) !== 0 && localStorage.getItem('city') && selectedFormat === '641e114f2945eabd89d70189') {
 			setSelectedCity(citiesByName[localStorage.getItem('city')])
 		} else {
-			// console.log('name',citiesByName)
 		}
 	}, [citiesByName, selectedFormat])
 

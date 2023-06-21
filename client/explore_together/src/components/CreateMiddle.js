@@ -14,7 +14,6 @@ const CreateMiddle = observer(({document, load, createFunc, dependName, dependen
 	return (
 		<ModalLayout admin={true} func={()=> {
 			createFunc(name, dependence).then(r=> {
-				console.log(r)
 				load()
 			})
 			AdminInstance.setIsCreating(false)

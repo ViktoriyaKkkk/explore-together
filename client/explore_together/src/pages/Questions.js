@@ -39,7 +39,6 @@ const Questions = () => {
 					<button onClick={
 						()=> {
 							setAnswers({ ...answers, first: !answers.first})
-							console.log(answers)
 						}
 					}
 						className='text-light-green md:ml-7 p-2 hover:text-dark-green'><IconContext.Provider
@@ -90,7 +89,6 @@ const Questions = () => {
 					<button onClick={
 						()=> {
 							setAnswers({ ...answers, second: !answers.second})
-							console.log(answers)
 						}
 					}
 									className='text-light-green md:ml-7 p-2 hover:text-dark-green'><IconContext.Provider
@@ -140,7 +138,6 @@ const Questions = () => {
 					<button onClick={
 						()=> {
 							setAnswers({ ...answers, third: !answers.third})
-							console.log(answers)
 						}
 					}
 									className='text-light-green md:ml-7 p-2 hover:text-dark-green'><IconContext.Provider
@@ -191,7 +188,6 @@ const Questions = () => {
 					<button onClick={
 						()=> {
 							setAnswers({ ...answers, forth: !answers.forth})
-							console.log(answers)
 						}
 					}
 									className='text-light-green md:ml-7 p-2 hover:text-dark-green'><IconContext.Provider
@@ -241,7 +237,6 @@ const Questions = () => {
 					<button onClick={
 						()=> {
 							setAnswers({ ...answers, fifth: !answers.fifth})
-							console.log(answers)
 						}
 					}
 									className='text-light-green md:ml-7 p-2 hover:text-dark-green'><IconContext.Provider

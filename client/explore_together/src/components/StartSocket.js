@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react'
 import Main from './Main'
 import { useSearch } from '../utils/useSearch'
 import { useLocation } from 'react-router-dom'
-import * as mobx from 'mobx'
 import { useAppContext } from '../context/AppContext'
 import { observer } from 'mobx-react-lite'
 
@@ -10,7 +9,7 @@ const StartSocket = observer(() => {
 
 	const {userStore} = useAppContext()
 
-	const [searches, err, load] = useSearch()
+	const [searches] = useSearch()
 	const chats = useMemo(() => searches?.filter(search => {
 		let res = false
 		search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
@@ -23,7 +22,6 @@ const StartSocket = observer(() => {
 
 	useMemo(()=>chats?.forEach((item)=>{
 		userStore.socket.emit('join_room', item._id)
-		console.log('joined ', item._id)
 	}),[chats,userStore.socket])
 
 	const location = useLocation()
@@ -32,13 +30,11 @@ const StartSocket = observer(() => {
 			userStore.setChat([...userStore.chat, data])
 			if (data.searchId !== location.pathname.split('/')[2]) {
 				userStore.setNotifications([...userStore.notifications, data])
-				console.log('zzzzzzzzzz', mobx.toJS(userStore.notifications))
 			}
 		})
-		console.log('receive')
 		userStore.setIsConnected(true)
 	}, [])
- console.log('startsocket',mobx.toJS(userStore.isConnected))
+ // console.log('startsocket',mobx.toJS(userStore.isConnected))
 	return (
 		<Main/>
 	)

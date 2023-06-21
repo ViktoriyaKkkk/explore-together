@@ -8,7 +8,6 @@ export const useMessages= (id) => {
 	const load = () => {
 		readMessages(id).then(data => {
 			if (data) {
-				console.log(data)
 				userStore.setChat(data)
 			} else {
 				userStore.setChat([])
