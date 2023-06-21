@@ -81,7 +81,7 @@ const StartForm = observer(() => {
 														 setBluredName(true)
 														 validateName()
 													 }}
-													 className={clsx('block w-full px-2 py-1.5 mt-1.5 text-gray bg-white border ' +
+													 className={clsx('block w-full px-2 py-1.5 mt-1.5 text-black bg-white border ' +
 														 'border-gray rounded-md focus:border-dark-green focus:shadow-light-green focus:ring-2 ' +
 														 'focus:ring-light-green focus:outline-none', nameErr && bluredName && 'ring-2 ring-red focus:ring-red')}
 													 required />
