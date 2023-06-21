@@ -346,7 +346,7 @@ const Dialogs = observer(() => {
 							<div className='relative h-20 py-5'>
 								<IconContext.Provider value={{ size: '2em' }}>
 									<button className='px-2.5 py-2.5 text-dark-green absolute right-0 top-3.5 z-10' onClick={() => {
-										sendMessage().then(r => console.log(r))
+										sendMessage().then(r => {})
 										setCurrMessage('')
 									}}><IoSendSharp />
 									</button>

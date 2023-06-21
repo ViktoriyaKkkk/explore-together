@@ -31,6 +31,5 @@ $geoHost.interceptors.request.use(config => {
 	if (config.headers) {
 		config.headers.Authorization = `Token 205aaeff0691466641ec8372e2f678235c07e2eb`
 	}
-	console.log(config)
 	return config
 })
