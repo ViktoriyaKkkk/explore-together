@@ -105,7 +105,7 @@ const Report = observer(() => {
 											autoComplete='report'
 											value={notificationText} onChange={e => setNotificationText(e.target.value)}
 
-											className='block w-full px-4 py-2 text-gray bg-black font-semibold
+											className='block w-full px-4 py-2 text-white bg-black font-semibold
 								border border-gray rounded-md focus:border-dark-green focus:outline-none focus:ring-2 focus:ring-light-green'
 											required />
 					</div>

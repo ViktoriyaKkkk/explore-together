@@ -95,7 +95,7 @@ const Dialogs = observer(() => {
 			}
 		})
 		userStore.setNotifications(newNotifications)
-	}, [location,userStore])
+	}, [location,userStore.chat])
 
 	const messagesEndRef = useRef(null)
 
@@ -233,7 +233,7 @@ const Dialogs = observer(() => {
 											setBluredReport(true)
 											validateReport()
 										}}
-										className='block w-full px-4 py-2 text-gray bg-black font-semibold
+										className='block w-full px-4 py-2 text-white bg-black font-semibold
 								border border-gray rounded-md focus:border-dark-green focus:outline-none focus:ring-2 focus:ring-light-green'
 										required />
 					{
@@ -274,7 +274,8 @@ const Dialogs = observer(() => {
 								<button onClick={()=>setTab('chat')} className={clsx('p-2 font-bold relative', tab === 'chat' && 'text-light-green')}>
 									<BsChatDots />
 									{
-										userStore.notifications.length !== 0 && <span
+										userStore.notifications.filter((item) => {
+											return (location.pathname.split('/')[2] !== item.searchId)}).length !== 0 && <span
 											className=" absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 md:w-3 md:h-3 ml-2 md:text-xs text-base font-semibold text-black bg-light-green
 									rounded-full">{userStore.notifications.length}</span>
 									}
@@ -305,8 +306,7 @@ const Dialogs = observer(() => {
 										<div className='w-1/4 text-white relative'>
 											{
 												userStore.notifications.filter((item) => {
-													return (item.searchId === chat._id && item.searchId !==location.pathname.split('/')[2])
-												}).length !== 0 && <span
+													return (item.searchId === chat._id && location.pathname.split('/')[2] !== item.searchId)}).length !== 0 && <span
 													className=' absolute -top-1 -left-3 inline-flex items-center justify-center w-3 h-3 ml-2 text-xs
 													font-semibold text-black bg-light-green rounded-full'>{userStore.notifications.filter((item) => {
 													return item.searchId === chat._id
@@ -349,7 +349,9 @@ const Dialogs = observer(() => {
 							<div
 								className={clsx('scrollbar flex overflow-y-scroll h-5/6 flex-col mt-5', userStore.chat && userStore.chat?.length > 6 &&
 									'scrollbar-thumb-light-gray scrollbar-track-gray scrollbar-thin')}>
-								{ userStore.chat.length === 0 ? <h1 className='text-xl text-gray place-self-center'>Здесь пока нет сообщений</h1> :
+								{ userStore.chat.filter((item)=>{
+									return item.searchId === location.pathname.split('/')[2]
+								}).length === 0 ? <h1 className='text-xl text-gray place-self-center'>Здесь пока нет сообщений</h1> :
 									userStore.chat.map((message,i) => {
 										if (location.pathname.split('/')[2] === message.searchId) {
 											return <div ref={messagesEndRef} key={i}

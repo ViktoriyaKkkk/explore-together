@@ -18,7 +18,7 @@ const Header = observer(() => {
 	const location = useLocation()
 
 	const [searches, err] = useSearch()
-	if (!searches.response){
+	if (!searches.response) {
 		searches.reverse()
 	}
 	const chats = useMemo(() => {
@@ -45,7 +45,7 @@ const Header = observer(() => {
 
 	return (<header>
 			<nav
-				className='fixed z-10 top-0 max-h-14 w-full sm:px-4 lg:px-6 pt-1 pb-1.5 sm:opacity-90 bg-black flex flex-wrap justify-between items-center w-screen'>
+				className='fixed z-10 top-0 scrollbar max-h-14 w-full sm:px-4 lg:px-6 pt-1 pb-1.5 sm:opacity-90 bg-black flex flex-wrap justify-between items-center w-screen'>
 				<button className='sm:hidden order-1 text-white p-2 ml-4' onClick={() => setMenu(!menu)}><IconContext.Provider
 					value={{ size: '2em' }}>
 					{
@@ -91,10 +91,12 @@ const Header = observer(() => {
 							'sm:justify-between w-full flex sm:w-auto', !menu && 'hidden sm:flex')} id='mobile-menu-2'>
 						<ul
 							className='flex flex-col my-auto pb-14 sm:pb-0 sm:mt-0 space-y-14 sm:space-y-0 w-fit sm:mt-4 mx-auto font-medium sm:flex-row lg:space-x-3 lg:mt-0'>
-							<Link to='/'
+
+							<Link to={userStore.isConnected === true ? `/main` : '/'}
 										className={clsx('pr-4 pl-3 text-white place-self-center',
-											location.pathname === '/' && 'drop-shadow-[0_6px_3px_rgba(111,207,151,0.8)] pb-0.5 block border-b-2 border-b-dark-green')}
+											(location.pathname === '/' || location.pathname === '/main') && 'drop-shadow-[0_6px_3px_rgba(111,207,151,0.8)] pb-0.5 block border-b-2 border-b-dark-green')}
 										aria-current='page'>Главная</Link>
+
 							<Link to='/about/'
 										className={clsx('pr-4 pl-3 text-white place-self-center',
 											location.pathname === '/about/' && 'drop-shadow-[0_6px_3px_rgba(111,207,151,0.8)] pb-0.5 block border-b-2 ' +
@@ -112,7 +114,7 @@ const Header = observer(() => {
 													'border-b-2 border-b-dark-green')}>Диалоги
 										{
 											userStore.notifications.length !== 0 && location.pathname.split('/')[1] !== 'dialogs' &&
-											<span className=' absolute top-0 right-0 inline-flex items-center justify-center w-3 h-3 ml-2 text-xs font-semibold text-black bg-light-green
+											<span className='absolute top-0 right-0 inline-flex items-center justify-center w-3 h-3 ml-2 text-xs font-semibold text-black bg-light-green
 									rounded-full'>{userStore.notifications.length}</span>
 										}
 
@@ -133,6 +135,7 @@ const Header = observer(() => {
 					{userStore._isAuth ?
 						<Link to='/' onClick={() => {
 							userStore.setIsAuth(false)
+							userStore.setIsConnected(false)
 							userStore.setUser({})
 							localStorage.clear('token')
 							localStorage.clear('city')

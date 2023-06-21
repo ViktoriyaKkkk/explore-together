@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { login, registration } from '../api/api.user'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import { observer } from 'mobx-react-lite'
 import { useValidation } from '../utils/useValidation'
 import { clsx } from 'clsx'
-import ErrModal from './ErrModal'
 import { readGeo, readIp } from '../api/api.geo'
 import Toast from './Toast'
-import { Toaster } from "react-hot-toast";
+import { Toaster } from 'react-hot-toast'
+import * as mobx from 'mobx'
+import { useSearch } from '../utils/useSearch'
+import Layout from './Layout'
 
 const StartForm = observer(() => {
 
@@ -28,7 +30,10 @@ const StartForm = observer(() => {
 	// const [snErr, validateSn] = useValidation(socialNetwork, { isEmpty: true })
 	// const [bluredSn, setBluredSn] = useState(false)
 
-	const navigate = useNavigate()
+	// const navigate = useNavigate()
+	//
+	// const [searches, err, load] = useSearch()
+	// const location = useLocation()
 
 	const auth = async () => {
 		if (userStore._isLogin) {
@@ -45,7 +50,7 @@ const StartForm = observer(() => {
 					}
 				})
 			} else {
-				Toast('err','Ошибка!', res.response.data.message)
+				Toast('err', 'Ошибка!', res.response.data.message)
 			}
 		} else {
 			const res = await registration(name, email, password, gender)
@@ -65,8 +70,31 @@ const StartForm = observer(() => {
 		}
 	}
 
-	return (<>
-			<Toaster/>
+	// const startSocket = useMemo(() => {
+	// 	const chats = searches?.filter(search => {
+	// 		let res = false
+	// 		search.owner === userStore._user.id ? res = true : search.participants.forEach((item) => {
+	// 			if (item === userStore._user.id) {
+	// 				res = true
+	// 			}
+	// 		})
+	// 		return res
+	// 	})
+	// 	chats?.forEach((item) => {
+	// 		userStore.socket.emit('join_room', item._id)
+	// 		console.log('joined ', item._id)
+	// 	})
+	// 	userStore.socket.on('receive_message', (data) => {
+	// 		userStore.setChat([...userStore.chat, data])
+	// 		if (data.searchId !== location.pathname.split('/')[2]) {
+	// 			userStore.setNotifications([...userStore.notifications, data])
+	// 			console.log('zzzzzzzzzz', mobx.toJS(userStore.notifications))
+	// 		}
+	// 	})
+	// }, [userStore.socket, searches, location])
+
+	return (<Layout>
+			<Toaster />
 			<div className="flex pt-14 flex-col h-screen bg-[url('../../public/img/background.jpg')] bg-cover bg-center">
 				<div className='grid place-items-center mx-2 my-auto'>
 
@@ -199,7 +227,9 @@ const StartForm = observer(() => {
 
 								<button type='button'
 												disabled={!userStore._isLogin ? emailErr || passwordErr || nameErr : emailErr || passwordErr}
-												onClick={auth}
+												onClick={()=>{
+													auth().then()
+												}}
 												className='w-full py-3 bg-dark-green bg-transparent-none rounded-md
                     font-medium text-white text-sm uppercase text-center
                     focus:outline-none hover:bg-light-green hover:shadow-none  disabled:cursor-not-allowed'>
@@ -212,7 +242,7 @@ const StartForm = observer(() => {
 					</div>
 				</div>
 			</div>
-		</>
+		</Layout>
 	)
 })
 

@@ -196,6 +196,7 @@ const MySearch = observer(() => {
 
 			<ModalLayout admin={false} func={() => {
 				createReports(userStore.user.id, userStore.isReading._id, reportText).then(r => console.log(r))
+				setReportText('')
 				Toast('ok', 'Внимание!', `Вы пожаловались на пользователя ${userStore.isReading.name}`)
 			}}>
 				<div className='relative flex items-start justify-center p-4 border-b border-gray rounded-t'>
@@ -221,7 +222,7 @@ const MySearch = observer(() => {
 											setBluredReport(true)
 											validateReport()
 										}}
-										className='block w-full px-4 py-2 text-gray bg-black font-semibold
+										className='block w-full px-4 py-2 text-white bg-black font-semibold
 								border border-gray rounded-md focus:border-dark-green focus:outline-none focus:ring-2 focus:ring-light-green'
 										required />
 					{
@@ -273,7 +274,7 @@ const MySearch = observer(() => {
 											времени: {timesById[item.time]}</p>
 										<p className='mb-1.5 w-fit font-normal'>Формат: {formatsById[item.format]}</p>
 										{item.city &&
-											<p className='mb-1.5 w-fit font-normal'>Город: {citiesById[item.city]}</p>}
+											<p className='mb-1.5 w-fit font-normal'>Город: {citiesById[item.city] ? citiesById[item.city] : '-'}</p>}
 										<p
 											className='mb-1.5 w-fit font-normal'>Число
 											участников: {item.numberOfPeople ? item.numberOfPeople : '-'}</p>
